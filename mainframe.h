@@ -4,13 +4,17 @@
 #include <QObject>
 #include <QWidget>
 
-class mainframe : public QWidget
+class MainFrame : public QWidget
 {
     Q_OBJECT
 public:
-    explicit mainframe(QWidget *parent = nullptr);
+    explicit MainFrame(QWidget *parent = nullptr);
 
 signals:
+
+
+private:
+    void initUi();
 
 public slots:
 };

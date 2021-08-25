@@ -6,6 +6,28 @@ TARGET = service_monitor
 TEMPLATE = app
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    mainframe.cpp \
+    servicemonitorproxy.cpp \
+    servicerequesttask.cpp \
+    servicemonitor.cpp \
+    baseservicemonitor.cpp \
+    baseservicemonitortask.cpp \
+    httpservicemonitortask.cpp \
+    servicegroup.cpp \
+    serviceitem.cpp \
+    servicegrouprepo.cpp
 
 RESOURCES +=         resources.qrc
+
+HEADERS += \
+    mainframe.h \
+    servicemonitorproxy.h \
+    servicerequesttask.h \
+    servicemonitor.h \
+    baseservicemonitor.h \
+    baseservicemonitortask.h \
+    httpservicemonitortask.h \
+    servicegroup.h \
+    serviceitem.h \
+    servicegrouprepo.h
