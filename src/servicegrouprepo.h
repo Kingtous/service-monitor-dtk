@@ -6,6 +6,7 @@
 
 #include <DSingleton>
 
+#include <QDir>
 #include <QObject>
 
 /// 服务DAO
@@ -15,12 +16,24 @@ class ServiceGroupRepo : public QObject,
   friend class DSingleton<ServiceGroupRepo>;
 
 public:
+  void init();
+
   const QList<ServiceGroup> &getServiceGroups();
+  void registerGroup(const QString &gname);
+  void readServiceGroupsFromJson(const QJsonDocument &doc);
+
+signals:
+  void serviceChanged();
 
 private:
   ServiceGroupRepo();
+
+  void syncWithDisk();
+
+private:
   // items
   QList<ServiceGroup> serviceGroups;
+  std::unique_ptr<QDir> configDir;
 };
 
 #endif // SERVICEGROUPREPO_H
