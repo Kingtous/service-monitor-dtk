@@ -19,7 +19,9 @@ SOURCES += \
     servicegrouprepo.cpp \
     servicemonitorsetting.cpp \
     addservicegroup.cpp \
-    dashboard.cpp
+    dashboard.cpp \
+    servicemanagepage.cpp \
+    addservicedialog.cpp
 
 RESOURCES +=         resources.qrc
 
@@ -36,10 +38,13 @@ HEADERS += \
     servicegrouprepo.h \
     servicemonitorsetting.h \
     addservicegroup.h \
-    dashboard.h
+    dashboard.h \
+    servicemanagepage.h \
+    addservicedialog.h
 
 FORMS += \
     leftsidebar.ui \
     dashboard.ui \
     service_manage.ui \
-    addservicegroup.ui
+    addservicegroup.ui \
+    addservicedialog.ui

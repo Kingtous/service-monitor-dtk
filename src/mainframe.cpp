@@ -1,6 +1,7 @@
 #include "mainframe.h"
 #include "dashboard.h"
 #include "servicegrouprepo.h"
+#include "servicemanagepage.h"
 #include "ui_dashboard.h"
 #include "ui_leftsidebar.h"
 #include "ui_service_manage.h"
@@ -11,8 +12,7 @@
 #include <QLine>
 
 MainFrame::MainFrame(QWidget *parent)
-    : QWidget(parent), leftSideBar(new Ui::LeftSideBar),
-      serviceManagePage(new Ui::ServiceManagePage) {
+    : QWidget(parent), leftSideBar(new Ui::LeftSideBar) {
   this->initUi();
 
   connect(btnGroup, &QButtonGroup::idClicked, this,
@@ -20,6 +20,8 @@ MainFrame::MainFrame(QWidget *parent)
 
   connect(ServiceGroupRepo::instance(), &ServiceGroupRepo::serviceChanged,
           dashboard, &DashBoardPage::onServiceGroupChanged);
+  connect(ServiceGroupRepo::instance(), &ServiceGroupRepo::serviceChanged,
+          this->manageWidget, &ServiceManagePage::onServiceGroupsChanged);
 }
 
 void MainFrame::initUi() {
@@ -58,7 +60,6 @@ void MainFrame::initUi() {
   dashboard = new DashBoardPage(this);
   rightPanel->addWidget(dashboard);
   // 用来管理
-  auto manageWidget = new QWidget(this);
-  serviceManagePage->setupUi(manageWidget);
+  manageWidget = new ServiceManagePage(this);
   rightPanel->addWidget(manageWidget);
 }

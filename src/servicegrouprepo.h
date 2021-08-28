@@ -21,14 +21,16 @@ public:
   const QList<ServiceGroup> &getServiceGroups();
   void registerGroup(const QString &gname);
   void readServiceGroupsFromJson(const QJsonDocument &doc);
+  bool deleteGroup(const QString &gname);
+  bool deleteItem(const QString &gname, const QString &itemName);
 
 signals:
   void serviceChanged();
 
 private:
   ServiceGroupRepo();
-
   void syncWithDisk();
+  int findGroup(const QString &gname);
 
 private:
   // items

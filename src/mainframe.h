@@ -2,6 +2,7 @@
 #define MAINFRAME_H
 
 #include "dashboard.h"
+#include "servicemanagepage.h"
 
 #include <QButtonGroup>
 #include <QObject>
@@ -26,8 +27,8 @@ private:
   Ui::LeftSideBar *leftSideBar;
   QStackedWidget *rightPanel;
   DashBoardPage *dashboard;
+  ServiceManagePage *manageWidget;
 
-  Ui::ServiceManagePage *serviceManagePage;
   QButtonGroup *btnGroup;
 
 private:

@@ -83,6 +83,16 @@ void ServiceGroupRepo::syncWithDisk() {
   qInfo("配置文件写入成功");
 }
 
+int ServiceGroupRepo::findGroup(const QString &gname) {
+  int len = this->serviceGroups.length();
+  for (int i = 0; i < len; i++) {
+    if (serviceGroups[i].getGroupName() == gname) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 void ServiceGroupRepo::readServiceGroupsFromJson(const QJsonDocument &doc) {
   if (doc.isNull()) {
     return;
@@ -101,4 +111,34 @@ void ServiceGroupRepo::readServiceGroupsFromJson(const QJsonDocument &doc) {
       emit serviceChanged();
     }
   }
+}
+
+bool ServiceGroupRepo::deleteGroup(const QString &gname) {
+  auto pointer = findGroup(gname);
+  if (pointer != -1) {
+    serviceGroups.removeAt(pointer);
+    emit serviceChanged();
+    syncWithDisk();
+    return true;
+  }
+  return false;
+}
+
+bool ServiceGroupRepo::deleteItem(const QString &gname,
+                                  const QString &itemName) {
+  auto pointer = findGroup(gname);
+  if (pointer != -1) {
+    auto services = serviceGroups[pointer].getServices();
+    auto len = services.length();
+    for (int i = 0; i < len; i++) {
+      auto service = services.at(i);
+      if (service.getServiceName() == itemName) {
+        services.removeAt(i);
+        emit serviceChanged();
+        syncWithDisk();
+        return true;
+      }
+    }
+  }
+  return false;
 }
