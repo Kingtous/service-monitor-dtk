@@ -2,6 +2,7 @@
 #define BASESERVICEMONITORTASK_H
 
 #include <QObject>
+#include <QRunnable>
 #include <QString>
 
 class BaseServiceMonitorTask : public QObject

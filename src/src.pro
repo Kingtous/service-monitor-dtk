@@ -8,9 +8,6 @@ TEMPLATE = app
 SOURCES += \
         main.cpp \
     mainframe.cpp \
-    servicegroup.cpp \
-    serviceitem.cpp \
-    servicegrouprepo.cpp \
     addservicegroup.cpp \
     dashboard.cpp \
     servicemanagepage.cpp \
@@ -20,9 +17,6 @@ RESOURCES +=         resources.qrc
 
 HEADERS += \
     mainframe.h \
-    servicegroup.h \
-    serviceitem.h \
-    servicegrouprepo.h \
     addservicegroup.h \
     dashboard.h \
     servicemanagepage.h \
