@@ -16,7 +16,7 @@ private:
     std::shared_ptr<ServiceGroup> group;
 
     // BaseServiceMonitor interface
-private:
+public:
     void initServiceMonitor();
     bool isInService();
     bool startService();
