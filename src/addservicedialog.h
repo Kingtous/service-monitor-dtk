@@ -1,15 +1,17 @@
 #ifndef ADDSERVICEDIALOG_H
 #define ADDSERVICEDIALOG_H
 
-#include "serviceitem.h"
+#include <DDialog>
 
-#include <QWidget>
+#include <networker/serviceitem.h>
+
+using namespace DTK_WIDGET_NAMESPACE;
 
 namespace Ui {
 class AddServiceDialog;
 }
 
-class AddServiceDialog : public QWidget {
+class AddServiceDialog : public DDialog {
   Q_OBJECT
 
 public:
@@ -17,10 +19,11 @@ public:
   ~AddServiceDialog();
 
 signals:
-  void onServiceConfirm(ServiceItem item);
+  void onServiceConfirm(const ServiceItem &item);
 
 private:
   Ui::AddServiceDialog *ui;
+  ServiceItem item{};
 };
 
 #endif // ADDSERVICEDIALOG_H

@@ -13,16 +13,16 @@ class ServiceItem {
 public:
   ServiceItem();
 
-  QString getServiceName() const;
+  const QString &getServiceName() const;
   void setServiceName(const QString &value);
 
-  QString getMethod() const;
+  const QString &getMethod() const;
   void setMethod(const QString &value);
 
-  QString getUrl() const;
+  const QString &getUrl() const;
   void setUrl(const QString &value);
 
-  QString getBody() const;
+  const QString &getBody() const;
   void setBody(const QString &value);
 
   int getCheckGapTimeInSec() const;

@@ -9,8 +9,3 @@ void ServiceMonitorSetting::init() {
 }
 
 ServiceMonitorSetting::ServiceMonitorSetting() {}
-
-void ServiceMonitorSetting::init()
-{
-
-}

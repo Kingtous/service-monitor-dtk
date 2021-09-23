@@ -1,4 +1,4 @@
-QT += core gui dtkwidget
+QT += core gui dtkwidget network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,3 +30,5 @@ FORMS += \
     addservicedialog.ui
 
 include($$PWD/networker/networker.pri)
+
+CONFIG += console

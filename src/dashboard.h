@@ -14,6 +14,9 @@ public slots:
   void onServiceGroupChanged();
 
 private:
+  void updateSwitchStatus();
+
+private:
   Ui::DashBoard *ui;
 };
 

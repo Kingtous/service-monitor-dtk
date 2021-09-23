@@ -1,11 +1,11 @@
 #include "mainframe.h"
-#include "servicegrouprepo.h"
 #include "ui_addservicegroup.h"
 
 #include <DApplication>
 #include <DApplicationSettings>
 #include <DDialog>
 #include <DFontSizeManager>
+#include <DLog>
 #include <DMainWindow>
 #include <DProgressBar>
 #include <DTitlebar>
@@ -16,6 +16,8 @@
 #include <QDebug>
 #include <QLayout>
 #include <QPropertyAnimation>
+
+#include <networker/servicegrouprepo.h>
 DWIDGET_USE_NAMESPACE
 
 extern DMainWindow *window;
@@ -38,6 +40,8 @@ int main(int argc, char *argv[]) {
   a.loadTranslator();
   a.setApplicationDisplayName(
       QCoreApplication::translate("Main", "DTK Application"));
+  Dtk::Core::DLogManager::registerFileAppender();
+  Dtk::Core::DLogManager::registerConsoleAppender();
 
   // 保存程序的窗口主题设置
   DApplicationSettings as;
@@ -91,12 +95,11 @@ void initMenuTriggers() {
     QObject::connect(ui.groupNameEdit, &QLineEdit::textChanged, window,
                      [&](const QString &text) { gname = text; });
     // 确定进行添加
-    QObject::connect(&dialog, &DDialog::buttonClicked, window,
-                     [&](int index, const QString &text) {
-                       if (index == 0) {
-                         ServiceGroupRepo::instance()->registerGroup(gname);
-                       }
-                     });
+    QObject::connect(&dialog, &DDialog::buttonClicked, window, [&](int index) {
+      if (index == 0) {
+        ServiceGroupRepo::instance()->registerGroup(gname);
+      }
+    });
 
     dialog.exec();
   });

@@ -1,6 +1,5 @@
 #include "mainframe.h"
 #include "dashboard.h"
-#include "servicegrouprepo.h"
 #include "servicemanagepage.h"
 #include "ui_dashboard.h"
 #include "ui_leftsidebar.h"
@@ -10,6 +9,8 @@
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QLine>
+
+#include <networker/servicegrouprepo.h>
 
 MainFrame::MainFrame(QWidget *parent)
     : QWidget(parent), leftSideBar(new Ui::LeftSideBar) {

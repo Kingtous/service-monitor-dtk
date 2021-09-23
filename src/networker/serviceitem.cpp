@@ -4,19 +4,19 @@
 
 ServiceItem::ServiceItem() {}
 
-QString ServiceItem::getServiceName() const { return serviceName; }
+const QString &ServiceItem::getServiceName() const { return serviceName; }
 
 void ServiceItem::setServiceName(const QString &value) { serviceName = value; }
 
-QString ServiceItem::getMethod() const { return method; }
+const QString &ServiceItem::getMethod() const { return method; }
 
 void ServiceItem::setMethod(const QString &value) { method = value; }
 
-QString ServiceItem::getUrl() const { return url; }
+const QString &ServiceItem::getUrl() const { return url; }
 
 void ServiceItem::setUrl(const QString &value) { url = value; }
 
-QString ServiceItem::getBody() const { return body; }
+const QString &ServiceItem::getBody() const { return body; }
 
 void ServiceItem::setBody(const QString &value) { body = value; }
 
@@ -36,7 +36,7 @@ QJsonValue ServiceItem::toJsonValue() const {
   obj["body"] = getBody();
   obj["checkGapTimeInSec"] = getCheckGapTimeInSec();
   obj["timeOut"] = getTimeOut();
-  return obj;
+  return std::move(obj);
 }
 
 ServiceItem ServiceItem::fromJsonValue(const QJsonValue obj) {

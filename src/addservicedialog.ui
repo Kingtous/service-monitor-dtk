@@ -42,20 +42,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="plainTextEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="requestBody"/>
      </item>
     </layout>
    </item>
@@ -69,7 +56,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="methodCombo">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -107,7 +94,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox_2">
+      <widget class="QSpinBox" name="checkGap">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -121,16 +108,6 @@
        <item>
         <property name="text">
          <string>秒</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>分钟</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>小时</string>
         </property>
        </item>
       </widget>
@@ -147,7 +124,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="url"/>
      </item>
     </layout>
    </item>
@@ -161,7 +138,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox">
+      <widget class="QSpinBox" name="timeoutInSec">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>

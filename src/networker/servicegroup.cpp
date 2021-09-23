@@ -4,7 +4,7 @@
 
 ServiceGroup::ServiceGroup(const QString &gname) { groupName = gname; }
 
-QList<ServiceItem> ServiceGroup::getServices() const { return services; }
+QList<ServiceItem> *ServiceGroup::getServices() { return &services; }
 
 void ServiceGroup::setServices(const QList<ServiceItem> &value) {
   services = value;

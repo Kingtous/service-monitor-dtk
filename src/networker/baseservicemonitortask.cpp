@@ -1,6 +1,4 @@
 #include "baseservicemonitortask.h"
 
-BaseServiceMonitorTask::BaseServiceMonitorTask()
-{
-
-}
+BaseServiceMonitorTask::BaseServiceMonitorTask(QObject *parent)
+    : QObject(parent) {}

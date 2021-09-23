@@ -9,7 +9,7 @@ class ServiceGroup {
 public:
   explicit ServiceGroup(const QString &gname);
 
-  QList<ServiceItem> getServices() const;
+  QList<ServiceItem> *getServices();
   void setServices(const QList<ServiceItem> &value);
 
   QString getGroupName() const;
