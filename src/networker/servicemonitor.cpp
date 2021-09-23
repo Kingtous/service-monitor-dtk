@@ -52,6 +52,8 @@ void ServiceMonitor::addServiceItemToPool(const ServiceItem& item)
         return;
     } else {
         auto task = new HttpServiceMonitorTask(item);
+        // 程序控制删除
+        task->setAutoDelete(false);
         connect(task, &HttpServiceMonitorTask::timeout, this,
             [=](const ServiceItem& taskServieItem) {
                 // 任务超时
@@ -65,9 +67,26 @@ void ServiceMonitor::addServiceItemToPool(const ServiceItem& item)
                 emit this->onLastRequestResult(taskServieItem, INT_MAX);
 
                 dDebug() << taskServieItem.getUrl() << "超时";
+                task->deleteLater();
             });
+        connect(task, &HttpServiceMonitorTask::error, this,
+            [=](QNetworkReply::NetworkError e) {
+                // 任务超时
+                auto timer = new QTimer(this);
+                timer->setInterval(item.getCheckGapTimeInSec() * 1000);
+                connect(timer, &QTimer::timeout, this, [=]() {
+                    this->addServiceItemToPool(item);
+                });
+                timer->setSingleShot(true);
+                timer->start();
+                emit this->onLastRequestResult(item, INT_MAX);
+
+                dDebug() << e << "错误";
+                task->deleteLater();
+            });
+
         connect(task, &HttpServiceMonitorTask::onHttpRequestCompleted, this,
-            [=](QNetworkReply* r, const ServiceItem& taskServiceItem, qint64 elapsed) {
+            [=](const ServiceItem& taskServiceItem, qint64 elapsed) {
                 dDebug() << taskServiceItem.getUrl() << "耗时：" << elapsed
                          << "ms. ";
                 emit this->onLastRequestResult(taskServiceItem, elapsed);
@@ -79,7 +98,7 @@ void ServiceMonitor::addServiceItemToPool(const ServiceItem& item)
                     this->addServiceItemToPool(taskServiceItem);
                 });
                 timer->start();
-                r->deleteLater();
+                task->deleteLater();
             });
         pool.start(task);
     }

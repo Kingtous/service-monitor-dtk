@@ -7,6 +7,7 @@
 #include <QNetworkRequest>
 #include <QSslConfiguration>
 #include <QThread>
+#include <networker/servicemonitor.h>
 
 DCORE_USE_NAMESPACE
 
@@ -19,24 +20,13 @@ namespace http {
         serviceItem = newServiceItem;
     }
 
-    QNetworkReply* HttpServiceMonitorTask::getRes() const { return res; }
-
     void HttpServiceMonitorTask::run()
     {
         manager = new QNetworkAccessManager();
-        connect(
-            manager, &QNetworkAccessManager::finished, this, [=](QNetworkReply* r) {
-                if (r->error() == QNetworkReply::NetworkError::NoError) {
-                    auto elapsed = t.elapsed();
-                    emit this->onHttpRequestCompleted(r, this->serviceItem, elapsed);
-                } else if (r->error() == QNetworkReply::NetworkError::TimeoutError) {
-                    emit this->timeout(this->serviceItem);
-                }
-                res = r;
-            });
+        auto loop = new QEventLoop();
+        // connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
         QUrl url { getUrl() };
         auto req = new QNetworkRequest { url };
-        QEventLoop loop;
         //  if (url.scheme() == "https") {
         //    auto config = QSslConfiguration();
         //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -49,18 +39,35 @@ namespace http {
         auto m = getMethod();
         t.start();
         if (m == "GET") {
-            auto reply = manager->get(*req);
-            connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-            //            connect(reply, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError err) {
-            //                dWarning() << "error" << err;
+            auto r = manager->get(*req);
+            connect(r, &QNetworkReply::finished, loop, &QEventLoop::quit);
+            connect(r, &QNetworkReply::finished, ServiceMonitor::instance(), [=]() {
+                if (r->error() == QNetworkReply::NetworkError::NoError) {
+                    auto elapsed = this->t.elapsed();
+                    emit this->onHttpRequestCompleted(this->serviceItem, elapsed);
+                } else if (r->error() == QNetworkReply::NetworkError::TimeoutError) {
+                    emit this->timeout(this->serviceItem);
+                } else {
+                    emit this->error(r->error());
+                }
+                r->deleteLater();
+            });
+            //            connect(r, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
+            //            connect(r, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError e) {
+            //                dDebug() << "error" << e;
             //            });
-            loop.exec();
+            loop->exec();
         } else if (m == "POST") {
             auto bytes = new QByteArray;
             bytes->append(getBody().toUtf8());
             manager->post(*req, *bytes);
-            loop.exec();
+            loop->exec();
+            free(bytes);
         }
+        //free(loop);
+        //free(manager);
+        manager->deleteLater();
+        //free(req)
         //        loop.exec();
         // dDebug() << "request " << getUrl() << "ended.";
     }

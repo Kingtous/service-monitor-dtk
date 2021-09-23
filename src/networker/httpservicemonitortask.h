@@ -2,13 +2,13 @@
 #define HTTPSERVICEMONITORTASK_H
 
 #include <QElapsedTimer>
+#include <QNetworkReply>
 
 #include "baseservicemonitortask.h"
 
 #include "serviceitem.h"
 
 class QNetworkAccessManager;
-class QNetworkReply;
 class QElapsedTimer;
 
 namespace networker {
@@ -18,19 +18,17 @@ namespace http {
     public:
         HttpServiceMonitorTask(const ServiceItem& newServiceItem,
             QObject* parent = nullptr);
-        // 获取服务返回数据
-        QNetworkReply* getRes() const;
 
     signals:
         // http请求完成信号
-        void onHttpRequestCompleted(QNetworkReply* rep, const ServiceItem& item,
+        void onHttpRequestCompleted(const ServiceItem& item,
             qint64 elasped);
         void timeout(const ServiceItem& item);
+        void error(QNetworkReply::NetworkError e);
 
     private:
         ServiceItem serviceItem {};
         // 服务端返回数据
-        QNetworkReply* res;
         QNetworkAccessManager* manager;
         QElapsedTimer t {};
 
