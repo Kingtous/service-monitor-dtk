@@ -23,10 +23,10 @@ namespace http {
     void HttpServiceMonitorTask::run()
     {
         manager = new QNetworkAccessManager();
-        auto loop = new QEventLoop();
+        QEventLoop loop;
         // connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
         QUrl url { getUrl() };
-        auto req = new QNetworkRequest { url };
+        auto req = QNetworkRequest { url };
         //  if (url.scheme() == "https") {
         //    auto config = QSslConfiguration();
         //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -34,18 +34,19 @@ namespace http {
         //    req->setSslConfiguration(config);
         //  }
         //  auto schemelist = manager->supportedSchemes();
-        req->setTransferTimeout(int(getTimeOutMs()));
+        req.setTransferTimeout(int(getTimeOutMs()));
         // req->setPriority(QNetworkRequest::Priority::HighPriority);
         auto m = getMethod();
         t.start();
         if (m == "GET") {
-            auto r = manager->get(*req);
-            connect(r, &QNetworkReply::finished, loop, &QEventLoop::quit);
+            auto r = manager->get(req);
+            connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
             connect(r, &QNetworkReply::finished, ServiceMonitor::instance(), [=]() {
                 if (r->error() == QNetworkReply::NetworkError::NoError) {
                     auto elapsed = this->t.elapsed();
                     emit this->onHttpRequestCompleted(this->serviceItem, elapsed);
-                } else if (r->error() == QNetworkReply::NetworkError::TimeoutError) {
+                } else if (r->error() == QNetworkReply::NetworkError::TimeoutError
+                    || r->error() == QNetworkReply::NetworkError::OperationCanceledError) {
                     emit this->timeout(this->serviceItem);
                 } else {
                     emit this->error(r->error());
@@ -56,19 +57,15 @@ namespace http {
             //            connect(r, &QNetworkReply::errorOccurred, this, [](QNetworkReply::NetworkError e) {
             //                dDebug() << "error" << e;
             //            });
-            loop->exec();
+            loop.exec();
         } else if (m == "POST") {
-            auto bytes = new QByteArray;
-            bytes->append(getBody().toUtf8());
-            manager->post(*req, *bytes);
-            loop->exec();
-            free(bytes);
+            QByteArray bytes;
+            bytes.append(getBody().toUtf8());
+            manager->post(req, bytes);
+            loop.exec();
         }
-        //free(loop);
-        //free(manager);
         manager->deleteLater();
-        //free(req)
-        //        loop.exec();
+        this->deleteLater();
         // dDebug() << "request " << getUrl() << "ended.";
     }
 

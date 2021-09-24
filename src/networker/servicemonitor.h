@@ -31,13 +31,13 @@ public:
     bool stopService();
 
 signals:
-    void onLastRequestResult(const ServiceItem& item, const qint64 latency);
+    void onLastRequestResult(const ServiceGroup& group, const ServiceItem& item, const qint64 latency);
 
 private:
     // 线程池控制
     QThreadPool pool {};
     // 添加服务到线程池
-    void addServiceItemToPool(const ServiceItem& item);
+    void addServiceItemToPool(const ServiceGroup& group, const ServiceItem& item);
 };
 
 #endif // SERVICEMONITOR_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>401</height>
+    <width>598</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -89,70 +89,12 @@
        <item>
         <layout class="QVBoxLayout" name="statusLayout">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="hl_topview"/>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-              <widget class="QLabel" name="label_2">
-               <property name="font">
-                <font>
-                 <pointsize>16</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>本组监控总数</string>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-              <widget class="QLabel" name="ll_monitortotal">
-               <property name="font">
-                <font>
-                 <family>文泉驿等宽微米黑</family>
-                 <pointsize>30</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                </font>
-               </property>
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-              <widget class="QLabel" name="label_4">
-               <property name="font">
-                <font>
-                 <pointsize>16</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>本组异常数量</string>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-              <widget class="QLabel" name="ll_abormalnums">
-               <property name="font">
-                <font>
-                 <family>文泉驿等宽微米黑</family>
-                 <pointsize>30</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                </font>
-               </property>
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <widget class="QtCharts::QChartView" name="graphicsView"/>
            </item>
           </layout>
          </item>
@@ -234,6 +176,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtCharts::QChartView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">qchartview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -1,4 +1,4 @@
-QT += core gui dtkwidget network
+QT += core gui dtkwidget network charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
