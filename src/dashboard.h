@@ -28,6 +28,7 @@ private:
     DLabel* ll_dis_totalnum;
     DLabel* ll_totalnum;
     volatile int index { 0 };
+    int currentGroupIndex { 0 };
     qint64 maxLatency { 0 };
     // 总数据
     QLineSeries* latencySeries;

@@ -11,7 +11,9 @@ SOURCES += \
     addservicegroup.cpp \
     dashboard.cpp \
     servicemanagepage.cpp \
-    addservicedialog.cpp
+    addservicedialog.cpp \
+    latency_chart_list.cpp \
+    services_detail_page.cpp
 
 RESOURCES +=         resources.qrc
 
@@ -20,7 +22,9 @@ HEADERS += \
     addservicegroup.h \
     dashboard.h \
     servicemanagepage.h \
-    addservicedialog.h
+    addservicedialog.h \
+    latency_chart_list.h \
+    services_detail_page.h
 
 FORMS += \
     leftsidebar.ui \

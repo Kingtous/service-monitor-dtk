@@ -1,6 +1,10 @@
 #include "dashboard.h"
+#include "services_detail_page.h"
 #include "ui_dashboard.h"
 
+#include <DDialog>
+#include <DFrame>
+#include <DGraphicsView>
 #include <DLabel>
 #include <DLog>
 #include <DPushButton>
@@ -26,9 +30,31 @@ DashBoardPage::DashBoardPage(QWidget* parent)
     ll_dis_totalnum->setText("组监控数量");
     ll_totalnum->setNum(0);
     ll_totalnum->setAlignment(Qt::AlignLeft);
-    tv->addWidget(ll_dis_totalnum);
-    tv->addWidget(ll_totalnum);
+    tv->addWidget(ll_dis_totalnum, 0, Qt::AlignBaseline);
+    tv->addWidget(ll_totalnum, 0, Qt::AlignBaseline);
+    // 详情按钮
+    auto groupDetailBtn = new DPushButton(this);
+    groupDetailBtn->setText(tr("详情"));
+    connect(groupDetailBtn, &DPushButton::clicked, this, [=]() {
+        // TODO 增加越界检查
+        auto group = ServiceGroupRepo::instance()->getServiceGroups()[this->currentGroupIndex];
+        auto dialog = new DDialog(this);
+        dialog->setTitle("组监控面板");
+        auto widget = new ServicesDetailPage(group, dialog);
+        dialog->addContent(widget);
+        auto conn = connect(ServiceMonitor::instance(), &ServiceMonitor::onLastRequestResult, widget, &ServicesDetailPage::onLatencyUpdate);
+        dialog->exec();
+        disconnect(conn);
+    });
+    tv->addWidget(groupDetailBtn, 0, Qt::AlignBaseline);
+
+    auto splitter = new DFrame(this);
+    splitter->setLineWidth(1);
+    splitter->setFrameShape(QFrame::HLine);
+    splitter->setFrameShadow(DFrame::Shadow::Sunken);
+    tv->insertWidget(2, splitter);
     // 初始化折线图
+
     latencySeries = new QLineSeries(this);
     latencySeries->setName("延迟");
     //    latencySeries->setPointLabelsVisible(true);
@@ -87,6 +113,7 @@ DashBoardPage::DashBoardPage(QWidget* parent)
             chart->scroll(pos, 0);
         }
     });
+
     QComboBox box;
     connect(ui->comboBox, &QComboBox::currentTextChanged, this, [=](const QString& text) {
         this->loadGroup(text);
@@ -105,6 +132,8 @@ void DashBoardPage::onServiceGroupChanged()
             loadGroup(serviceGroup.getGroupName());
         }
     }
+    // reset
+    currentGroupIndex = 0;
 }
 
 void DashBoardPage::updateSwitchStatus()
@@ -127,5 +156,9 @@ void DashBoardPage::loadGroup(const QString& gname)
     if (index != -1) {
         auto group = ServiceGroupRepo::instance()->getServiceGroups()[index];
         ll_totalnum->setNum(group.getServices()->length());
+        // reset index to index
+        currentGroupIndex = index;
+    } else {
+        currentGroupIndex = 0;
     }
 }
