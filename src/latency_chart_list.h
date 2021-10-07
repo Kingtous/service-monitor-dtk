@@ -15,26 +15,30 @@ QT_CHARTS_USE_NAMESPACE
 struct LatencySeries;
 
 class LatencyChartList : public QWidget {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    LatencyChartList(ServiceGroup& group, QWidget* parent = nullptr);
+  LatencyChartList(ServiceGroup &group, QWidget *parent = nullptr);
 
 public slots:
-    void appendLatency(const ServiceItem& item, qint64 latency);
+  void appendLatency(const ServiceItem &item, qint64 latency);
 
 private:
-    QWidget* root;
-    QVBoxLayout* layout;
-    QString groupName { "" };
-    QList<ServiceItem>* serviceItems;
-    QMap<QString, LatencySeries*> ss;
-    volatile int index { 0 };
-    QTimer refreshTimer;
+  QWidget *root;
+  QVBoxLayout *layout;
+  QString groupName{""};
+  QList<ServiceItem> *serviceItems;
+  QMap<QString, LatencySeries *> ss;
+  volatile int index{0};
+  QTimer *refreshTimer;
+
+  // QWidget interface
+protected:
+  void closeEvent(QCloseEvent *event);
 };
 
 typedef struct LatencySeries {
-    QLineSeries* series = nullptr;
-    qreal y = 0; // 上一次延迟
+  QLineSeries *series = nullptr;
+  qreal y = 0; // 上一次延迟
 } LatencySeries;
 
 #endif // LATENCY_CHART_LIST_H
