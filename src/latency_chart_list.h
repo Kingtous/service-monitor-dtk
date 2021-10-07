@@ -1,6 +1,7 @@
 #ifndef LATENCY_CHART_LIST_H
 #define LATENCY_CHART_LIST_H
 
+#include <QChartView>
 #include <QLineSeries>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -30,6 +31,8 @@ private:
   QMap<QString, LatencySeries *> ss;
   volatile int index{0};
   QTimer *refreshTimer;
+  QChartView *chartView;
+  QChart *chart;
 
   // QWidget interface
 protected:

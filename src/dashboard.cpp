@@ -109,11 +109,10 @@ DashBoardPage::DashBoardPage(QWidget *parent) : QWidget(parent) {
         index += indexStep;
         this->latencySeries->append(index, latency);
         ui->ll_prerequesturl->setText(item.getUrl());
-        dDebug() << "index:" << index << ",latency:" << latency;
+        //        dDebug() << "index:" << index << ",latency:" << latency;
         // TODO: 上一次请求结果，包含group信息，可以发送到可视化窗口
         if (index >= axisX->tickCount()) {
           auto pos = chart->plotArea().width() / axisX->tickCount();
-          dDebug() << "scroll to x:" << pos;
           chart->scroll(pos, 0);
         }
       });

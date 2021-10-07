@@ -13,18 +13,22 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
   // init ui
   layout = new QVBoxLayout(this);
   auto it = this->serviceItems->begin();
-  auto chartView = new QChartView(this);
+
+  chartView = new QChartView(this);
   chartView->setMinimumHeight(400);
   chartView->setMinimumWidth(400);
-  auto chart = new QChart();
-  chart->createDefaultAxes();
+  chartView->setRenderHint(QPainter::Antialiasing);
+
+  chart = new QChart();
   chart->setTheme(QChart::ChartThemeDark);
   chartView->setChart(chart);
   layout->addWidget(chartView);
+
   auto axisX = new QValueAxis(this);
   axisX->setRange(0, 10);
   axisX->setTickCount(5);
   axisX->setLabelFormat("%d");
+
   while (it != this->serviceItems->end()) {
     auto model = new LatencySeries(); // TODO series parent
     auto series = new QLineSeries(this);
@@ -35,18 +39,30 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
     chart->addSeries(series);
     chart->setAxisX(axisX, series);
   }
+  // 创建坐标
+  chart->createDefaultAxes();
+  chart->axisY()->setRange(0, 5000);
+  chart->axisY()->setMin(0);
+
   // 1s刷新一次
   refreshTimer = new QTimer(this);
   refreshTimer->setInterval(1000);
   connect(refreshTimer, &QTimer::timeout, this, [=]() {
-    dDebug() << "trigger latency chart list update";
-    auto it = this->ss.values().begin();
-    while (it != this->ss.values().end()) {
-      (*it)->series->append(this->index, (*it)->y);
+    auto it = this->ss.keyValueBegin();
+    while (it != this->ss.keyValueEnd()) {
+      auto latency = it->second->y;
+      it->second->series->append(this->index, latency);
+      dDebug() << "append (" << this->index << "," << latency << ")";
       it++;
     }
 
-    this->index++;
+    // range 10,到了5才继续scroll
+    if (this->index > 5) {
+      this->chart->scroll(chart->plotArea().width() / axisX->tickCount(), 0);
+    }
+    // 计算坐标
+    auto indexStep = (axisX->max() - axisX->min()) / axisX->tickCount();
+    this->index += indexStep;
   });
   refreshTimer->start();
 }
