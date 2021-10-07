@@ -15,6 +15,7 @@
 #include <QDate>
 #include <QDebug>
 #include <QLayout>
+#include <QMetaProperty>
 #include <QPropertyAnimation>
 
 #include <networker/servicegrouprepo.h>
@@ -103,4 +104,7 @@ void initMenuTriggers() {
 
     dialog.exec();
   });
+
+  // 注册ServiceItem
+  qRegisterMetaType<ServiceItem>("ServiceItem");
 }

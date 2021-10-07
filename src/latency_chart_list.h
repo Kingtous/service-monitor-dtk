@@ -33,6 +33,7 @@ private:
   QTimer *refreshTimer;
   QChartView *chartView;
   QChart *chart;
+  QColor color;
 
   // QWidget interface
 protected:

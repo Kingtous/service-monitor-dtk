@@ -1,31 +1,13 @@
 #include "baseservicemonitor.h"
 
-BaseServiceMonitor::BaseServiceMonitor()
-{
-    this->initServiceMonitor();
-}
+BaseServiceMonitor::BaseServiceMonitor() { this->initServiceMonitor(); }
 
-BaseServiceMonitor::~BaseServiceMonitor()
-{
+BaseServiceMonitor::~BaseServiceMonitor() {}
 
-}
+void BaseServiceMonitor::initServiceMonitor() {}
 
-void BaseServiceMonitor::initServiceMonitor()
-{
+bool BaseServiceMonitor::isInService() { return false; }
 
-}
+bool BaseServiceMonitor::startService() { return false; }
 
-bool BaseServiceMonitor::isInService()
-{
-    return false;
-}
-
-bool BaseServiceMonitor::startService()
-{
-    return false;
-}
-
-bool BaseServiceMonitor::stopService()
-{
-    return false;
-}
+bool BaseServiceMonitor::stopService() { return false; }
