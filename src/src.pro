@@ -41,3 +41,9 @@ HEADERS += \
 include($$PWD/networker/networker.pri)
 
 CONFIG += console
+
+
+target.source = $$TARGET
+target.path = /usr/bin
+
+INSTALLS = target

@@ -1,0 +1,9 @@
+Package: cn.kingtous.service-monitor
+Version: 1.0.0
+Architecture: Kingtous
+Section: Network
+Maintainer: Kingtous
+Depends: qt5
+Priority: optional
+Homepage: service-monitor.kingtous.cn
+Description: 欢迎使用服务URL实时监控系统
