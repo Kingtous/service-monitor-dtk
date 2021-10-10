@@ -11,33 +11,39 @@
 
 DCORE_USE_NAMESPACE
 
-class ServiceMonitor : public BaseServiceMonitor,
-                       public DSingleton<ServiceMonitor> {
-    Q_OBJECT
-    friend class DSingleton<ServiceMonitor>;
+class ServiceMonitor
+  : public BaseServiceMonitor
+  , public DSingleton<ServiceMonitor>
+{
+  Q_OBJECT
+  friend class DSingleton<ServiceMonitor>;
 
 public:
-    ServiceMonitor();
-    ~ServiceMonitor();
+  ServiceMonitor();
+  ~ServiceMonitor();
 
 private:
-    volatile bool inService { false };
+  volatile bool inService{ false };
 
-    // BaseServiceMonitor interface
+  // BaseServiceMonitor interface
 public:
-    void initServiceMonitor();
-    bool isInService();
-    bool startService();
-    bool stopService();
+  void initServiceMonitor();
+  bool isInService();
+  bool startService();
+  bool stopService();
 
 signals:
-    void onLastRequestResult(const ServiceGroup& group, const ServiceItem& item, const qint64 latency);
+  void onStartService();
+  void onStopService();
+  void onLastRequestResult(const ServiceGroup& group,
+                           const ServiceItem& item,
+                           const qint64 latency);
 
 private:
-    // 线程池控制
-    QThreadPool pool {};
-    // 添加服务到线程池
-    void addServiceItemToPool(const ServiceGroup& group, const ServiceItem& item);
+  // 线程池控制
+  QThreadPool pool{};
+  // 添加服务到线程池
+  void addServiceItemToPool(const ServiceGroup& group, const ServiceItem& item);
 };
 
 #endif // SERVICEMONITOR_H

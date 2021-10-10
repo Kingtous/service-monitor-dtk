@@ -5,8 +5,8 @@
 void
 ServiceMonitorSetting::init()
 {
+  // 暂时用不到
   DSettings settings{};
-  QJsonDocument doc;
 }
 
 ServiceMonitorSetting::ServiceMonitorSetting() {}

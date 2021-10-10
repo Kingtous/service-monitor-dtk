@@ -35,6 +35,7 @@ private:
   QChartView* chartView;
   QChart* chart;
   QColor color;
+  int maximumLatency{ 2000 };
 
   // QWidget interface
 protected:

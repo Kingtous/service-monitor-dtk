@@ -52,7 +52,7 @@ LatencyChartList::LatencyChartList(ServiceGroup& group, QWidget* parent)
   }
   // 创建坐标
   chart->createDefaultAxes();
-  chart->axisY()->setRange(0, 2000);
+  chart->axisY()->setRange(0, this->maximumLatency);
   chart->axisY()->setMin(0);
   chart->axisY()->setLabelsVisible(true);
 
@@ -70,7 +70,7 @@ LatencyChartList::LatencyChartList(ServiceGroup& group, QWidget* parent)
       } else {
         it->second->series->append(this->index, latency);
       }
-      dDebug() << "append (" << this->index << "," << latency << ")";
+      //      dDebug() << "append (" << this->index << "," << latency << ")";
       it++;
     }
     // range 10,到了8才继续scroll
@@ -87,13 +87,16 @@ LatencyChartList::LatencyChartList(ServiceGroup& group, QWidget* parent)
 void
 LatencyChartList::appendLatency(const ServiceItem& item, qint64 latency)
 {
-  dDebug() << "LatencyChartList:"
-           << ":" << item.getUrl() << ", " << latency;
+  //  dDebug() << "LatencyChartList:"
+  //           << ":" << item.getUrl() << ", " << latency;
   auto name = item.getServiceName();
   auto it = this->ss.find(name);
   if (it != this->ss.end()) {
-    dDebug() << "LatencyChartList APPEND:"
-             << ":" << item.getUrl() << ", " << latency;
+    //    dDebug() << "LatencyChartList APPEND:"
+    //             << ":" << item.getUrl() << ", " << latency;
+    if (latency == INT_MAX) {
+      latency = this->maximumLatency;
+    }
     it.value()->y = latency;
   }
 }

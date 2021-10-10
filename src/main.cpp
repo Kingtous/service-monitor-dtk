@@ -3,6 +3,7 @@
 
 #include <DApplication>
 #include <DApplicationSettings>
+#include <DDesktopServices>
 #include <DDialog>
 #include <DFontSizeManager>
 #include <DLog>
@@ -113,11 +114,24 @@ initMenuTriggers()
     // 确定进行添加
     QObject::connect(&dialog, &DDialog::buttonClicked, window, [&](int index) {
       if (index == 0) {
-        ServiceGroupRepo::instance()->registerGroup(gname);
+        auto res = ServiceGroupRepo::instance()->registerGroup(gname);
+        if (!res) {
+          DDialog dialog;
+          dialog.setTitle("添加失败");
+          dialog.setMessage("可能存在同名组，请检查");
+          dialog.addButton("确定", true, DDialog::ButtonType::ButtonRecommend);
+          dialog.exec();
+        }
       }
     });
 
     dialog.exec();
+  });
+
+  // 打开日志
+  auto mOpenLog = window->titlebar()->menu()->addAction("打开日志文件夹");
+  QObject::connect(mOpenLog, &QAction::triggered, window, [=]() {
+    DDesktopServices::showFolder(DLogManager::getlogFilePath());
   });
 
   // 注册ServiceItem

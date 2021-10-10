@@ -26,8 +26,8 @@ ServicesDetailPage::onLatencyUpdate(const ServiceGroup& group,
                                     const ServiceItem& item,
                                     qint64 latency)
 {
-  dDebug() << "ServiceDetailPage:" << group.getGroupName() << ":["
-           << item.getMethod() << "] " << item.getUrl() << ", " << latency;
+  //  dDebug() << "ServiceDetailPage:" << group.getGroupName() << ":["
+  //           << item.getMethod() << "] " << item.getUrl() << ", " << latency;
   if (this->group.getGroupName() == group.getGroupName()) {
     latencyChart->appendLatency(item, latency);
   } else {

@@ -12,7 +12,9 @@ ServiceMonitor::ServiceMonitor() {}
 
 ServiceMonitor::~ServiceMonitor() {}
 
-void ServiceMonitor::initServiceMonitor() {
+void
+ServiceMonitor::initServiceMonitor()
+{
   dDebug() << "system ideal thread counts: " << QThread::idealThreadCount();
   pool.setMaxThreadCount(QThread::idealThreadCount());
   pool.setExpiryTimeout(30 * 1000); // 30s 任务过期
@@ -31,22 +33,34 @@ void ServiceMonitor::initServiceMonitor() {
   }
 }
 
-bool ServiceMonitor::isInService() { return inService; }
+bool
+ServiceMonitor::isInService()
+{
+  return inService;
+}
 
-bool ServiceMonitor::startService() {
+bool
+ServiceMonitor::startService()
+{
   inService = true;
   initServiceMonitor();
+  emit this->onStartService();
   return inService;
 }
 
-bool ServiceMonitor::stopService() {
+bool
+ServiceMonitor::stopService()
+{
   inService = false;
   this->pool.clear();
+  emit this->onStopService();
   return inService;
 }
 
-void ServiceMonitor::addServiceItemToPool(const ServiceGroup &group,
-                                          const ServiceItem &item) {
+void
+ServiceMonitor::addServiceItemToPool(const ServiceGroup& group,
+                                     const ServiceItem& item)
+{
   // 如果不在service，则不添加
   if (!isInService()) {
     return;
@@ -54,8 +68,10 @@ void ServiceMonitor::addServiceItemToPool(const ServiceGroup &group,
     auto task = new HttpServiceMonitorTask(item, this);
     // 程序控制删除
     task->setAutoDelete(false);
-    connect(task, &HttpServiceMonitorTask::timeout, this,
-            [=](const ServiceItem &taskServieItem) {
+    connect(task,
+            &HttpServiceMonitorTask::timeout,
+            this,
+            [=](const ServiceItem& taskServieItem) {
               // 任务超时
               auto timer = new QTimer(this);
               timer->setInterval(taskServieItem.getCheckGapTimeInSec() * 1000);
@@ -73,8 +89,9 @@ void ServiceMonitor::addServiceItemToPool(const ServiceGroup &group,
       // 任务超时
       auto timer = new QTimer(this);
       timer->setInterval(item.getCheckGapTimeInSec() * 1000);
-      connect(timer, &QTimer::timeout, this,
-              [=]() { this->addServiceItemToPool(group, item); });
+      connect(timer, &QTimer::timeout, this, [=]() {
+        this->addServiceItemToPool(group, item);
+      });
       timer->setSingleShot(true);
       timer->start();
       emit this->onLastRequestResult(group, item, INT_MAX);
@@ -83,8 +100,10 @@ void ServiceMonitor::addServiceItemToPool(const ServiceGroup &group,
                << "错误";
     });
 
-    connect(task, &HttpServiceMonitorTask::onHttpRequestCompleted, this,
-            [=](const ServiceItem &taskServiceItem, qint64 elapsed) {
+    connect(task,
+            &HttpServiceMonitorTask::onHttpRequestCompleted,
+            this,
+            [=](const ServiceItem& taskServiceItem, qint64 elapsed) {
               dDebug() << item.getMethod() << taskServiceItem.getUrl()
                        << "耗时：" << elapsed << "ms. ";
               emit this->onLastRequestResult(group, taskServiceItem, elapsed);

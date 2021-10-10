@@ -9,6 +9,7 @@
 
 #include <networker/servicegrouprepo.h>
 #include <networker/serviceitem.h>
+#include <networker/servicemonitor.h>
 
 ServiceManagePage::ServiceManagePage(DWidget* parent)
   : DWidget(parent)
@@ -17,6 +18,19 @@ ServiceManagePage::ServiceManagePage(DWidget* parent)
   ui->setupUi(this);
   this->onServiceGroupsChanged();
   ui->treeView->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+
+  connect(
+    ServiceMonitor::instance(), &ServiceMonitor::onStartService, this, [=]() {
+      // 开始服务，不允许修改了
+      ui->treeView->setDisabled(true);
+    });
+
+  connect(
+    ServiceMonitor::instance(), &ServiceMonitor::onStopService, this, [=]() {
+      // 结束服务
+      ui->treeView->setDisabled(false);
+    });
+
   connect(
     ui->treeView,
     &DTreeView::customContextMenuRequested,
@@ -101,10 +115,16 @@ ServiceManagePage::handleAddService(QModelIndex index)
   connect(dialog,
           &AddServiceDialog::onServiceConfirm,
           this,
-          [&](const ServiceItem& item) {
+          [&, dialog](const ServiceItem& item) {
             // item
             const auto groupName = index.data(Qt::EditRole).toString();
-            ServiceGroupRepo::instance()->registerItem(groupName, item);
+            if (ServiceGroupRepo::instance()->registerItem(groupName, item)) {
+              dialog->close();
+            } else {
+              DDialog dialog{ "提示", "含有重名的记录，请更换名称" };
+              dialog.addButton("确定", true);
+              dialog.exec();
+            }
           });
   dialog->exec();
 }

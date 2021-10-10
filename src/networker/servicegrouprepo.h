@@ -21,18 +21,22 @@ public:
   void init();
 
   QList<ServiceGroup>& getServiceGroups();
-  void registerGroup(const QString& gname);
+  bool registerGroup(const QString& gname);
   void readServiceGroupsFromJson(const QJsonDocument& doc);
   bool deleteGroup(const QString& gname);
 
   int findItem(const QString& gname, const QString& itemName);
   bool deleteItem(const QString& gname, const QString& itemName);
-  void registerItem(const QString& gname, const ServiceItem& item);
+  bool registerItem(const QString& gname, const ServiceItem& item);
   void updateItem(const QString& gname,
                   const QString& itemName,
                   const ServiceItem& item);
 
   int findGroup(const QString& gname);
+
+  QString urlRegex{
+    "https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"
+  };
 
 signals:
   void serviceChanged();

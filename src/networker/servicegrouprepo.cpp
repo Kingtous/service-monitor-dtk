@@ -2,11 +2,11 @@
 
 #include <DFloatingMessage>
 #include <DMainWindow>
+#include <DStandardPaths>
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QStandardPaths>
 
 DWIDGET_USE_NAMESPACE
 
@@ -27,7 +27,7 @@ ServiceGroupRepo::getServiceGroups()
     if (configDir == nullptr) {
       // 获取一下看看是不是没有读取
       auto path =
-        QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+        DStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 
       if (path.isEmpty()) {
         auto message = new Dtk::Widget::DFloatingMessage(
@@ -59,13 +59,21 @@ ServiceGroupRepo::getServiceGroups()
   return this->serviceGroups;
 }
 
-void
+bool
 ServiceGroupRepo::registerGroup(const QString& gname)
 {
   ServiceGroup newGroup{ gname };
+  auto it = this->serviceGroups.begin();
+  while (it != this->serviceGroups.end()) {
+    if (it->getGroupName() == gname) {
+      return false;
+    }
+    it++;
+  }
   this->serviceGroups.append(newGroup);
   emit serviceChanged();
   syncWithDisk();
+  return true;
 }
 
 ServiceGroupRepo::ServiceGroupRepo() {}
@@ -177,15 +185,25 @@ ServiceGroupRepo::deleteItem(const QString& gname, const QString& itemName)
   return false;
 }
 
-void
+bool
 ServiceGroupRepo::registerItem(const QString& gname, const ServiceItem& item)
 {
   auto pointer = findGroup(gname);
   if (pointer != -1) {
     auto services = serviceGroups[pointer].getServices();
+    auto it = services->begin();
+    while (it != services->end()) {
+      if (it->getServiceName() == item.getServiceName()) {
+        return false;
+      }
+      it++;
+    }
     services->append(item);
     emit serviceChanged();
     syncWithDisk();
+    return true;
+  } else {
+    return false;
   }
 }
 

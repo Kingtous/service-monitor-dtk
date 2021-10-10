@@ -1,7 +1,10 @@
+#include <DLog>
 #include <DSpinBox>
 
 #include "addservicedialog.h"
 #include "ui_addservicedialog.h"
+
+DCORE_USE_NAMESPACE
 
 AddServiceDialog::AddServiceDialog(QWidget* parent)
   : DDialog(parent)
@@ -13,10 +16,11 @@ AddServiceDialog::AddServiceDialog(QWidget* parent)
   auto content = new QWidget(this);
   ui->setupUi(content);
   this->addContent(content);
-  connect(ui->serviceName,
-          &DLineEdit::textChanged,
-          this,
-          [&](const QString& text) { this->item.setServiceName(text); });
+  connect(
+    ui->serviceName, &DLineEdit::textChanged, this, [&](const QString& text) {
+      this->item.setServiceName(text);
+      //      dDebug() << text;
+    });
   connect(ui->requestBody,
           &DLineEdit::textChanged,
           this,
@@ -35,9 +39,6 @@ AddServiceDialog::AddServiceDialog(QWidget* parent)
           &QComboBox::textActivated,
           this,
           [&](const QString& text) { item.setMethod(text); });
-  connect(this, &DDialog::accepted, this, [this]() {
-    emit this->onServiceConfirm(this->item);
-  });
 }
 
 AddServiceDialog::AddServiceDialog(const ServiceItem& item, QWidget* parent)
@@ -54,4 +55,28 @@ AddServiceDialog::AddServiceDialog(const ServiceItem& item, QWidget* parent)
 AddServiceDialog::~AddServiceDialog()
 {
   delete ui;
+}
+
+void
+AddServiceDialog::done(int r)
+{
+  if (r == DDialog::Accepted) {
+    DDialog dialog("提示", "");
+    dialog.addButton("确定", true);
+    if (item.getServiceName().isEmpty()) {
+      dialog.setMessage("服务名不能为空");
+      dialog.exec();
+      return;
+    }
+    QRegExp exp{ ServiceGroupRepo::instance()->urlRegex };
+    if (!exp.exactMatch(item.getUrl())) {
+      dialog.setMessage("URL不合法，请检查");
+      dialog.exec();
+      return;
+    }
+    // 确认
+    emit this->onServiceConfirm(this->item);
+  } else {
+    DDialog::done(r);
+  }
 }
