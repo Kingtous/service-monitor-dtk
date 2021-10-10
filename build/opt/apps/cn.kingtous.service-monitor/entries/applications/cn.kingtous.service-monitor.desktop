@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Utility;Calculator;
 Comment=实时监测URL连接状态
-Exec=service_monitor
+Exec=/opt/apps/cn.kingtous.service-monitor/files/bin/service_monitor %U
 GenericName=Service Monitor
 Icon=cn.kingtous.service-monitor.svg
 Name=服务状态监视者
