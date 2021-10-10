@@ -24,14 +24,19 @@ HEADERS += \
     servicemanagepage.h \
     addservicedialog.h \
     latency_chart_list.h \
-    services_detail_page.h
+    services_detail_page.h \
+    ui_addservicedialog.h \
+    ui_addservicegroup.h \
+    ui_dashboard.h \
+    ui_leftsidebar.h \
+    ui_service_manage.h \
 
-FORMS += \
-    leftsidebar.ui \
-    dashboard.ui \
-    service_manage.ui \
-    addservicegroup.ui \
-    addservicedialog.ui
+#FORMS += \
+#    leftsidebar.ui \
+#    dashboard.ui \
+#    service_manage.ui \
+#    addservicegroup.ui \
+#    addservicedialog.ui
 
 include($$PWD/networker/networker.pri)
 

@@ -5,12 +5,13 @@
 #include <DLog>
 #include <DMenu>
 #include <DStandardItem>
+#include <DTreeView>
 
 #include <networker/servicegrouprepo.h>
 #include <networker/serviceitem.h>
 
-ServiceManagePage::ServiceManagePage(QWidget* parent)
-  : QWidget(parent)
+ServiceManagePage::ServiceManagePage(DWidget* parent)
+  : DWidget(parent)
 {
   ui = new Ui::ServiceManagePage;
   ui->setupUi(this);
@@ -18,7 +19,7 @@ ServiceManagePage::ServiceManagePage(QWidget* parent)
   ui->treeView->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
   connect(
     ui->treeView,
-    &QTreeView::customContextMenuRequested,
+    &DTreeView::customContextMenuRequested,
     this,
     [=](const QPoint& p) {
       auto index = ui->treeView->indexAt(p);

@@ -4,10 +4,12 @@
 #include "dashboard.h"
 #include "servicemanagepage.h"
 
+#include <DStackedWidget>
+#include <DWidget>
 #include <QButtonGroup>
 #include <QObject>
-#include <QStackedWidget>
-#include <QWidget>
+
+DWIDGET_USE_NAMESPACE
 
 namespace Ui {
 class LeftSideBar;
@@ -15,21 +17,22 @@ class DashBoard;
 class ServiceManagePage;
 }; // namespace Ui
 
-class MainFrame : public QWidget {
+class MainFrame : public DWidget
+{
   Q_OBJECT
 public:
-  explicit MainFrame(QWidget *parent = nullptr);
+  explicit MainFrame(DWidget* parent = nullptr);
 
 signals:
   void sidebarBtnClicked(int index);
 
 private:
-  Ui::LeftSideBar *leftSideBar;
-  QStackedWidget *rightPanel;
-  DashBoardPage *dashboard;
-  ServiceManagePage *manageWidget;
+  Ui::LeftSideBar* leftSideBar;
+  QStackedWidget* rightPanel;
+  DashBoardPage* dashboard;
+  ServiceManagePage* manageWidget;
 
-  QButtonGroup *btnGroup;
+  QButtonGroup* btnGroup;
 
 private:
   void initUi();

@@ -17,7 +17,9 @@
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-DashBoardPage::DashBoardPage(QWidget *parent) : QWidget(parent) {
+DashBoardPage::DashBoardPage(DWidget* parent)
+  : DWidget(parent)
+{
   ui = new Ui::DashBoard;
   ui->setupUi(this);
   // 数量
@@ -35,33 +37,37 @@ DashBoardPage::DashBoardPage(QWidget *parent) : QWidget(parent) {
   groupDetailBtn->setText(tr("详情"));
   connect(groupDetailBtn, &DPushButton::clicked, this, [=]() {
     // TODO 增加越界检查
-    auto group = ServiceGroupRepo::instance()
-                     ->getServiceGroups()[this->currentGroupIndex];
+    auto group =
+      ServiceGroupRepo::instance()->getServiceGroups()[this->currentGroupIndex];
     DDialog dialog;
     dialog.setTitle("组监控面板");
     auto widget = new ServicesDetailPage(group, &dialog);
     dialog.addContent(widget);
     auto conn = connect(ServiceMonitor::instance(),
-                        &ServiceMonitor::onLastRequestResult, widget,
+                        &ServiceMonitor::onLastRequestResult,
+                        widget,
                         &ServicesDetailPage::onLatencyUpdate);
     dialog.exec();
-    disconnect(conn);
   });
   tv->addWidget(groupDetailBtn, 0, Qt::AlignBaseline);
 
   auto splitter = new DFrame(this);
   splitter->setLineWidth(1);
-  splitter->setFrameShape(QFrame::HLine);
+  splitter->setFrameShape(DFrame::HLine);
   splitter->setFrameShadow(DFrame::Shadow::Sunken);
   tv->insertWidget(2, splitter);
   // 初始化折线图
 
   latencySeries = new QLineSeries(this);
   latencySeries->setName("延迟");
-  //    latencySeries->setPointLabelsVisible(true);
+  latencySeries->setColor(QColor(240, 240, 240));
+  latencySeries->setPointLabelsVisible();
+  latencySeries->setPointLabelsFormat("@yPoint ms");
+  latencySeries->setPointLabelsVisible(true);
+  //  latencySeries->setUseOpenGL();
   //    timeoutSeries = new QScatterSeries(this);
   //    timeoutSeries->setName("超时");
-  QChart *chart = new QChart();
+  QChart* chart = new QChart();
   chart->setTitle("延迟总图");
   chart->addSeries(latencySeries);
   //    chart->addSeries(timeoutSeries);
@@ -74,7 +80,7 @@ DashBoardPage::DashBoardPage(QWidget *parent) : QWidget(parent) {
   axisX->setTickCount(5);
   axisX->setLabelFormat("%d");
   chart->axisY()->setMin(0);
-  chart->axisY()->setRange(0, 500);
+  chart->axisY()->setRange(0, 2000);
   chart->setAxisX(axisX, latencySeries);
   //    chart->setAxisX(axisX, timeoutSeries);
   ui->graphicsView->setChart(chart);
@@ -90,39 +96,46 @@ DashBoardPage::DashBoardPage(QWidget *parent) : QWidget(parent) {
     }
     this->updateSwitchStatus();
   });
-  connect(
-      ServiceMonitor::instance(), &ServiceMonitor::onLastRequestResult, this,
-      [=](const ServiceGroup &group, const ServiceItem &item,
-          const qint64 latency) {
-        if (latency == INT_MAX) {
-          ui->ll_lastLag->setText("访问超时");
-        } else {
-          ui->ll_lastLag->setText(QString::number(latency) + "ms");
-          if (latency > this->maxLatency) {
-            chart->axisY()->setRange(0, latency + 200);
-            this->maxLatency = latency;
-          } else {
-            chart->axisY()->setRange(0, maxLatency + 200);
-          }
-        }
-        qreal indexStep = (axisX->max() - axisX->min()) / axisX->tickCount();
-        index += indexStep;
-        this->latencySeries->append(index, latency);
-        ui->ll_prerequesturl->setText(item.getUrl());
-        //        dDebug() << "index:" << index << ",latency:" << latency;
-        // TODO: 上一次请求结果，包含group信息，可以发送到可视化窗口
-        if (index >= axisX->tickCount()) {
-          auto pos = chart->plotArea().width() / axisX->tickCount();
-          chart->scroll(pos, 0);
-        }
-      });
+  connect(ServiceMonitor::instance(),
+          &ServiceMonitor::onLastRequestResult,
+          this,
+          [=](const ServiceGroup& group,
+              const ServiceItem& item,
+              const qint64 latency) {
+            if (latency == INT_MAX) {
+              ui->ll_lastLag->setText("访问超时");
+            } else {
+              ui->ll_lastLag->setText(QString::number(latency) + "ms");
+              if (latency > this->maxLatency) {
+                chart->axisY()->setRange(0, latency + 200);
+                this->maxLatency = latency;
+              } else {
+                chart->axisY()->setRange(0, maxLatency + 200);
+              }
+            }
+            qreal indexStep =
+              (axisX->max() - axisX->min()) / axisX->tickCount();
+            index += indexStep;
+            this->latencySeries->append(index, latency);
+            ui->ll_prerequesturl->setText(item.getUrl());
+            //        dDebug() << "index:" << index << ",latency:" << latency;
+            // TODO: 上一次请求结果，包含group信息，可以发送到可视化窗口
+            if (index >= axisX->tickCount()) {
+              auto pos = chart->plotArea().width() / axisX->tickCount();
+              chart->scroll(pos, 0);
+            }
+          });
 
   QComboBox box;
-  connect(ui->comboBox, &QComboBox::currentTextChanged, this,
-          [=](const QString &text) { this->loadGroup(text); });
+  connect(ui->comboBox,
+          &QComboBox::currentTextChanged,
+          this,
+          [=](const QString& text) { this->loadGroup(text); });
 }
 
-void DashBoardPage::onServiceGroupChanged() {
+void
+DashBoardPage::onServiceGroupChanged()
+{
   auto serviceGroups = ServiceGroupRepo::instance()->getServiceGroups();
   auto length = serviceGroups.length();
   ui->comboBox->clear();
@@ -137,7 +150,9 @@ void DashBoardPage::onServiceGroupChanged() {
   currentGroupIndex = 0;
 }
 
-void DashBoardPage::updateSwitchStatus() {
+void
+DashBoardPage::updateSwitchStatus()
+{
   // update status
   if (ServiceMonitor::instance()->isInService()) {
     ui->btnMonitor->setChecked(true);
@@ -150,7 +165,9 @@ void DashBoardPage::updateSwitchStatus() {
   }
 }
 
-void DashBoardPage::loadGroup(const QString &gname) {
+void
+DashBoardPage::loadGroup(const QString& gname)
+{
   int index = ServiceGroupRepo::instance()->findGroup(gname);
   if (index != -1) {
     auto group = ServiceGroupRepo::instance()->getServiceGroups()[index];

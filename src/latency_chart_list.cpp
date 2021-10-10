@@ -8,8 +8,9 @@
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
-LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
-    : QWidget(parent) {
+LatencyChartList::LatencyChartList(ServiceGroup& group, QWidget* parent)
+  : QWidget(parent)
+{
   this->serviceItems = group.getServices();
   this->groupName = group.getGroupName();
   // init ui
@@ -28,6 +29,7 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
   chart = new QChart();
   chart->setAnimationOptions(chart->AllAnimations);
   chart->setTheme(QChart::ChartThemeDark);
+
   chartView->setChart(chart);
   layout->addWidget(chartView);
 
@@ -43,14 +45,14 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
     series->setName(it->getServiceName());
     this->ss.insert(it->getServiceName(), model);
     it++;
-    series->setPointLabelsVisible();
+    //    series->setPointLabelsVisible();
     series->setPointLabelsFormat("@yPoint ms");
     chart->addSeries(series);
     chart->setAxisX(axisX, series);
   }
   // 创建坐标
   chart->createDefaultAxes();
-  chart->axisY()->setRange(0, 3000);
+  chart->axisY()->setRange(0, 2000);
   chart->axisY()->setMin(0);
   chart->axisY()->setLabelsVisible(true);
 
@@ -64,7 +66,7 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
       auto latency = it->second->y;
       if (latency == INT_MAX) {
         dWarning() << it->first << "访问出现错误！";
-        it->second->series->append(this->index, 3000);
+        it->second->series->append(this->index, 2000);
       } else {
         it->second->series->append(this->index, latency);
       }
@@ -82,7 +84,9 @@ LatencyChartList::LatencyChartList(ServiceGroup &group, QWidget *parent)
   refreshTimer->start();
 }
 
-void LatencyChartList::appendLatency(const ServiceItem &item, qint64 latency) {
+void
+LatencyChartList::appendLatency(const ServiceItem& item, qint64 latency)
+{
   dDebug() << "LatencyChartList:"
            << ":" << item.getUrl() << ", " << latency;
   auto name = item.getServiceName();
@@ -94,4 +98,8 @@ void LatencyChartList::appendLatency(const ServiceItem &item, qint64 latency) {
   }
 }
 
-void LatencyChartList::closeEvent(QCloseEvent *event) { refreshTimer->stop(); }
+void
+LatencyChartList::closeEvent(QCloseEvent* event)
+{
+  refreshTimer->stop();
+}

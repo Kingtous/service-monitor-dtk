@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-      <widget class="QLabel" name="label">
+      <widget class="DLabel" name="label">
        <property name="text">
         <string>设置页面</string>
        </property>

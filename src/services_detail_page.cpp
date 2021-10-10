@@ -7,8 +7,10 @@
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-ServicesDetailPage::ServicesDetailPage(ServiceGroup &group, QWidget *parent)
-    : QWidget(parent), group(group) {
+ServicesDetailPage::ServicesDetailPage(ServiceGroup& group, DWidget* parent)
+  : DWidget(parent)
+  , group(group)
+{
   auto layout = new QVBoxLayout(this);
   // label
   auto label = new DLabel(this);
@@ -19,9 +21,11 @@ ServicesDetailPage::ServicesDetailPage(ServiceGroup &group, QWidget *parent)
   layout->addWidget(latencyChart, Qt::AlignCenter);
 }
 
-void ServicesDetailPage::onLatencyUpdate(const ServiceGroup &group,
-                                         const ServiceItem &item,
-                                         qint64 latency) {
+void
+ServicesDetailPage::onLatencyUpdate(const ServiceGroup& group,
+                                    const ServiceItem& item,
+                                    qint64 latency)
+{
   dDebug() << "ServiceDetailPage:" << group.getGroupName() << ":["
            << item.getMethod() << "] " << item.getUrl() << ", " << latency;
   if (this->group.getGroupName() == group.getGroupName()) {

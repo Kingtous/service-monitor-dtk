@@ -4,6 +4,7 @@
 #include "ui_dashboard.h"
 
 #include <DLabel>
+#include <DWidget>
 #include <QLineSeries>
 #include <QScatterSeries>
 #include <QSplineSeries>
@@ -12,28 +13,29 @@
 DWIDGET_USE_NAMESPACE
 QT_CHARTS_USE_NAMESPACE
 
-class DashBoardPage : public QWidget {
-    Q_OBJECT
+class DashBoardPage : public DWidget
+{
+  Q_OBJECT
 public:
-    explicit DashBoardPage(QWidget* parent = nullptr);
+  explicit DashBoardPage(DWidget* parent = nullptr);
 
 public slots:
-    void onServiceGroupChanged();
+  void onServiceGroupChanged();
 
 private:
-    void updateSwitchStatus();
+  void updateSwitchStatus();
 
 private:
-    Ui::DashBoard* ui;
-    DLabel* ll_dis_totalnum;
-    DLabel* ll_totalnum;
-    volatile int index { 0 };
-    int currentGroupIndex { 0 };
-    qint64 maxLatency { 0 };
-    // 总数据
-    QLineSeries* latencySeries;
-    QScatterSeries* timeoutSeries;
-    void loadGroup(const QString& gname);
+  Ui::DashBoard* ui;
+  DLabel* ll_dis_totalnum;
+  DLabel* ll_totalnum;
+  volatile int index{ 0 };
+  int currentGroupIndex{ 0 };
+  qint64 maxLatency{ 0 };
+  // 总数据
+  QLineSeries* latencySeries;
+  QScatterSeries* timeoutSeries;
+  void loadGroup(const QString& gname);
 };
 
 #endif // DASHBOARD_H

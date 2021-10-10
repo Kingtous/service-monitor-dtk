@@ -1,22 +1,25 @@
 #ifndef ADDSERVICEGROUP_H
 #define ADDSERVICEGROUP_H
 
-#include <QDialog>
+#include <DDialog>
+#include <DWidget>
+
+DWIDGET_USE_NAMESPACE
 
 namespace Ui {
 class AddServiceGroup;
 }
 
-class AddServiceGroup : public QDialog
+class AddServiceGroup : public DDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit AddServiceGroup(QWidget *parent = nullptr);
-    ~AddServiceGroup();
+  explicit AddServiceGroup(DWidget* parent = nullptr);
+  ~AddServiceGroup();
 
 private:
-    Ui::AddServiceGroup *ui;
+  Ui::AddServiceGroup* ui;
 };
 
 #endif // ADDSERVICEGROUP_H

@@ -17,14 +17,14 @@
    <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="label_4">
+      <widget class="DLabel" name="label_4">
        <property name="text">
         <string>请求体</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="requestBody"/>
+      <widget class="DLineEdit" name="requestBody"/>
      </item>
     </layout>
    </item>
@@ -33,14 +33,14 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="DLabel" name="label">
          <property name="text">
           <string>名称</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="serviceName"/>
+        <widget class="DLineEdit" name="serviceName"/>
        </item>
       </layout>
      </item>
@@ -49,7 +49,7 @@
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="DLabel" name="label_2">
        <property name="text">
         <string>方法</string>
        </property>
@@ -80,21 +80,21 @@
    <item row="5" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QLabel" name="label_5">
+      <widget class="DLabel" name="label_5">
        <property name="text">
         <string>检查方式</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_9">
+      <widget class="DLabel" name="label_9">
        <property name="text">
         <string>间隔</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="checkGap">
+      <widget class="DSpinBox" name="checkGap">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -103,6 +103,9 @@
        </property>
        <property name="minimum">
         <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
        </property>
       </widget>
      </item>
@@ -120,14 +123,14 @@
    <item row="6" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QLabel" name="label_6">
+      <widget class="DLabel" name="label_6">
        <property name="text">
         <string>超时时间</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="timeoutInSec">
+      <widget class="DSpinBox" name="timeoutInSec">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -143,7 +146,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_7">
+      <widget class="DLabel" name="label_7">
        <property name="text">
         <string>秒</string>
        </property>
@@ -154,14 +157,14 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_3">
+      <widget class="DLabel" name="label_3">
        <property name="text">
         <string>URL</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="url"/>
+      <widget class="DLineEdit" name="url"/>
      </item>
     </layout>
    </item>

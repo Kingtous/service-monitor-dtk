@@ -2,9 +2,10 @@
 
 #include <QJsonDocument>
 
-void ServiceMonitorSetting::init() {
-  QSettings settings{};
-  settings;
+void
+ServiceMonitorSetting::init()
+{
+  DSettings settings{};
   QJsonDocument doc;
 }
 

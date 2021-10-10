@@ -15,18 +15,22 @@ DCORE_USE_NAMESPACE
 namespace networker {
 namespace http {
 HttpServiceMonitorTask::HttpServiceMonitorTask(
-    const ServiceItem &newServiceItem, QObject *parent)
-    : BaseServiceMonitorTask(parent) {
+  const ServiceItem& newServiceItem,
+  QObject* parent)
+  : BaseServiceMonitorTask(parent)
+{
   serviceItem = newServiceItem;
 }
 
-void HttpServiceMonitorTask::run() {
+void
+HttpServiceMonitorTask::run()
+{
   manager = new QNetworkAccessManager();
   QEventLoop loop;
   // connect(manager, &QNetworkAccessManager::finished, &loop,
   // &QEventLoop::quit);
-  QUrl url{getUrl()};
-  auto req = QNetworkRequest{url};
+  QUrl url{ getUrl() };
+  auto req = QNetworkRequest{ url };
   //  if (url.scheme() == "https") {
   //    auto config = QSslConfiguration();
   //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -40,7 +44,7 @@ void HttpServiceMonitorTask::run() {
   t.start();
   if (m == "GET") {
     auto r = manager->get(req);
-    connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    QObject::connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     //            connect(r, &QNetworkReply::errorOccurred, &loop,
     //            &QEventLoop::quit); connect(r, &QNetworkReply::errorOccurred,
     //            this, [](QNetworkReply::NetworkError e) {
@@ -52,7 +56,7 @@ void HttpServiceMonitorTask::run() {
       emit this->onHttpRequestCompleted(this->serviceItem, elapsed);
     } else if (r->error() == QNetworkReply::NetworkError::TimeoutError ||
                r->error() ==
-                   QNetworkReply::NetworkError::OperationCanceledError) {
+                 QNetworkReply::NetworkError::OperationCanceledError) {
       emit this->timeout(this->serviceItem);
     } else {
       emit this->error(r->errorString());
@@ -63,14 +67,14 @@ void HttpServiceMonitorTask::run() {
     bytes.append(getBody().toUtf8());
     //    req.setHeader(req.ContentTypeHeader, "text/plain");
     auto r = manager->post(req, bytes);
-    connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    QObject::connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
     if (r->error() == QNetworkReply::NetworkError::NoError) {
       auto elapsed = this->t.elapsed();
       emit this->onHttpRequestCompleted(this->serviceItem, elapsed);
     } else if (r->error() == QNetworkReply::NetworkError::TimeoutError ||
                r->error() ==
-                   QNetworkReply::NetworkError::OperationCanceledError) {
+                 QNetworkReply::NetworkError::OperationCanceledError) {
       emit this->timeout(this->serviceItem);
     } else {
       emit this->error(r->errorString());
@@ -82,23 +86,33 @@ void HttpServiceMonitorTask::run() {
   // dDebug() << "request " << getUrl() << "ended.";
 }
 
-const QString &HttpServiceMonitorTask::getName() {
+const QString&
+HttpServiceMonitorTask::getName()
+{
   return this->serviceItem.getServiceName();
 }
 
-const QString &HttpServiceMonitorTask::getMethod() {
+const QString&
+HttpServiceMonitorTask::getMethod()
+{
   return this->serviceItem.getMethod();
 }
 
-const QString &HttpServiceMonitorTask::getUrl() {
+const QString&
+HttpServiceMonitorTask::getUrl()
+{
   return this->serviceItem.getUrl();
 }
 
-const QString &HttpServiceMonitorTask::getBody() {
+const QString&
+HttpServiceMonitorTask::getBody()
+{
   return this->serviceItem.getBody();
 }
 
-long HttpServiceMonitorTask::getTimeOutMs() {
+long
+HttpServiceMonitorTask::getTimeOutMs()
+{
   return this->serviceItem.getTimeOut() * 1000;
 }
 
