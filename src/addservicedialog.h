@@ -16,6 +16,7 @@ class AddServiceDialog : public DDialog {
 
 public:
   explicit AddServiceDialog(QWidget *parent = nullptr);
+  AddServiceDialog(const ServiceItem &item, QWidget *parent = nullptr);
   ~AddServiceDialog();
 
 signals:

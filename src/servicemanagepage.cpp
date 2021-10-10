@@ -9,46 +9,54 @@
 #include <networker/servicegrouprepo.h>
 #include <networker/serviceitem.h>
 
-ServiceManagePage::ServiceManagePage(QWidget *parent) : QWidget(parent) {
+ServiceManagePage::ServiceManagePage(QWidget* parent)
+  : QWidget(parent)
+{
   ui = new Ui::ServiceManagePage;
   ui->setupUi(this);
   this->onServiceGroupsChanged();
   ui->treeView->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
   connect(
-      ui->treeView, &QTreeView::customContextMenuRequested, this,
-      [=](const QPoint &p) {
-        auto index = ui->treeView->indexAt(p);
-        auto data = index.data();
-        if (index.parent() == QModelIndex()) {
-          auto menu = new Dtk::Widget::DMenu();
-          menu->addAction("添加监控服务", this,
-                          [=]() { this->handleAddService(index); })
-              ->setIcon(QIcon(":/images/icon.svg"));
-          menu->addAction("重命名组", [=]() { this->handleRenameGroup(index); })
-              ->setIcon(QIcon(":/images/eye.svg"));
-          menu->addAction("删除该组", [=]() { this->handleDeleteGroup(index); })
-              ->setIcon(QIcon(":/images/delete.svg"));
-          menu->popup(ui->treeView->viewport()->mapToGlobal(p));
-        } else if (index.parent() != QModelIndex()) {
-          auto menu = new Dtk::Widget::DMenu();
-          menu->addAction("编辑服务", this,
-                          [=]() { this->handleEditService(index); })
-              ->setIcon(QIcon(":/images/icon.svg"));
-          menu->addAction("删除服务",
-                          [=]() { this->handleRemoveService(index); })
-              ->setIcon(QIcon(":/images/delete.svg"));
-          menu->popup(ui->treeView->viewport()->mapToGlobal(p));
-        }
-      });
+    ui->treeView,
+    &QTreeView::customContextMenuRequested,
+    this,
+    [=](const QPoint& p) {
+      auto index = ui->treeView->indexAt(p);
+      auto data = index.data();
+      if (index.parent() == QModelIndex()) {
+        auto menu = new Dtk::Widget::DMenu();
+        menu
+          ->addAction(
+            "添加监控服务", this, [=]() { this->handleAddService(index); })
+          ->setIcon(QIcon(":/images/icon.svg"));
+        //        menu->addAction("重命名组", [=]() {
+        //        this->handleRenameGroup(index); })
+        //          ->setIcon(QIcon(":/images/eye.svg"));
+        menu->addAction("删除该组", [=]() { this->handleDeleteGroup(index); })
+          ->setIcon(QIcon(":/images/delete.svg"));
+        menu->popup(ui->treeView->viewport()->mapToGlobal(p));
+      } else if (index.parent() != QModelIndex()) {
+        auto menu = new Dtk::Widget::DMenu();
+        menu
+          ->addAction(
+            "编辑服务", this, [=]() { this->handleEditService(index); })
+          ->setIcon(QIcon(":/images/icon.svg"));
+        menu->addAction("删除服务", [=]() { this->handleRemoveService(index); })
+          ->setIcon(QIcon(":/images/delete.svg"));
+        menu->popup(ui->treeView->viewport()->mapToGlobal(p));
+      }
+    });
 }
 
-void ServiceManagePage::onServiceGroupsChanged() {
+void
+ServiceManagePage::onServiceGroupsChanged()
+{
   // 获取service
   auto serviceGroups = ServiceGroupRepo::instance()->getServiceGroups();
   auto icon = QIcon(":/images/eye.svg");
 
   auto serviceViewRoot = new QStandardItemModel(this);
-  serviceViewRoot->setHorizontalHeaderLabels({"监控组", "方法", "URL"});
+  serviceViewRoot->setHorizontalHeaderLabels({ "监控组", "方法", "URL" });
 
   auto serviceGroupIt = serviceGroups.begin();
   while (serviceGroupIt != serviceGroups.end()) {
@@ -58,7 +66,7 @@ void ServiceManagePage::onServiceGroupsChanged() {
     serviceGroupNode->setIcon(icon);
     serviceGroupNode->setEditable(false);
     serviceGroupNode->setData(group.getGroupName(), Qt::EditRole);
-    foreach (const ServiceItem &item, *group.getServices()) {
+    foreach (const ServiceItem& item, *group.getServices()) {
       auto serviceNode = new Dtk::Widget::DStandardItem();
       serviceNode->setText(item.getServiceName());
       serviceNode->setIcon(icon);
@@ -72,7 +80,7 @@ void ServiceManagePage::onServiceGroupsChanged() {
       url->setText(item.getUrl());
       url->setEditable(false);
       url->setData(item.getUrl(), Qt::EditRole);
-      serviceGroupNode->appendRow({serviceNode, method, url});
+      serviceGroupNode->appendRow({ serviceNode, method, url });
     }
     serviceViewRoot->appendRow(serviceGroupNode);
     serviceGroupIt++;
@@ -82,13 +90,17 @@ void ServiceManagePage::onServiceGroupsChanged() {
   ui->treeView->expandAll();
 }
 
-void ServiceManagePage::handleAddService(QModelIndex index) {
+void
+ServiceManagePage::handleAddService(QModelIndex index)
+{
   auto dialog = new AddServiceDialog(this);
   dialog->addButton("取消", false, Dtk::Widget::DDialog::ButtonNormal);
-  dialog->addButton("确定", true,
-                    Dtk::Widget::DDialog::ButtonType::ButtonRecommend);
-  connect(dialog, &AddServiceDialog::onServiceConfirm, this,
-          [&](const ServiceItem &item) {
+  dialog->addButton(
+    "确定", true, Dtk::Widget::DDialog::ButtonType::ButtonRecommend);
+  connect(dialog,
+          &AddServiceDialog::onServiceConfirm,
+          this,
+          [&](const ServiceItem& item) {
             // item
             const auto groupName = index.data(Qt::EditRole).toString();
             ServiceGroupRepo::instance()->registerItem(groupName, item);
@@ -96,9 +108,36 @@ void ServiceManagePage::handleAddService(QModelIndex index) {
   dialog->exec();
 }
 
-void ServiceManagePage::handleEditService(const QModelIndex &index) {}
+void
+ServiceManagePage::handleEditService(const QModelIndex& index)
+{
+  auto serviceName = index.data(Qt::EditRole).toString();
+  auto gname = index.parent().data(Qt::EditRole).toString();
+  int gid = ServiceGroupRepo::instance()->findGroup(gname);
+  int sid = ServiceGroupRepo::instance()->findItem(gname, serviceName);
+  if (gid == -1 || sid == -1) {
+    return;
+  }
+  auto originItem =
+    ServiceGroupRepo::instance()->getServiceGroups()[gid].getServices()->at(
+      sid);
+  auto dialog = new AddServiceDialog(originItem, this);
+  dialog->addButton("取消", false, Dtk::Widget::DDialog::ButtonNormal);
+  dialog->addButton(
+    "确定", true, Dtk::Widget::DDialog::ButtonType::ButtonRecommend);
+  connect(dialog,
+          &AddServiceDialog::onServiceConfirm,
+          this,
+          [&, serviceName, gname](const ServiceItem& item) {
+            // item
+            ServiceGroupRepo::instance()->updateItem(gname, serviceName, item);
+          });
+  dialog->exec();
+}
 
-void ServiceManagePage::handleRemoveService(const QModelIndex &index) {
+void
+ServiceManagePage::handleRemoveService(const QModelIndex& index)
+{
   auto serviceName = index.data(Qt::EditRole).toString();
   auto gname = index.parent().data(Qt::EditRole).toString();
   auto dialog = new Dtk::Widget::DDialog(this);
@@ -112,15 +151,19 @@ void ServiceManagePage::handleRemoveService(const QModelIndex &index) {
   dialog->exec();
 }
 
-void ServiceManagePage::handleDeleteGroup(QModelIndex index) {
+void
+ServiceManagePage::handleDeleteGroup(QModelIndex index)
+{
   auto dialog = new Dtk::Widget::DDialog(this);
   auto data = index.data(Qt::EditRole);
   dialog->setTitle("提示");
   dialog->setMessage("确定要删除" + data.toString() + "组吗？");
   dialog->addButton("确定", true, Dtk::Widget::DDialog::ButtonWarning);
   dialog->addButton("取消", false, Dtk::Widget::DDialog::ButtonRecommend);
-  connect(dialog, &Dtk::Widget::DDialog::buttonClicked, this,
-          [=](int index, const QString &text) {
+  connect(dialog,
+          &Dtk::Widget::DDialog::buttonClicked,
+          this,
+          [=](int index, const QString& text) {
             if (index == 0) {
               ServiceGroupRepo::instance()->deleteGroup(data.toString());
             }
@@ -128,4 +171,6 @@ void ServiceManagePage::handleDeleteGroup(QModelIndex index) {
   dialog->exec();
 }
 
-void ServiceManagePage::handleRenameGroup(QModelIndex index) {}
+void
+ServiceManagePage::handleRenameGroup(QModelIndex index)
+{}

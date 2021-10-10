@@ -28,4 +28,14 @@ AddServiceDialog::AddServiceDialog(QWidget *parent)
           [this]() { emit this->onServiceConfirm(this->item); });
 }
 
+AddServiceDialog::AddServiceDialog(const ServiceItem &item, QWidget *parent)
+    : AddServiceDialog(parent) {
+  this->ui->serviceName->setText(item.getServiceName());
+  this->ui->requestBody->setText(item.getBody());
+  this->ui->url->setText(item.getUrl());
+  this->ui->timeoutInSec->setValue(item.getTimeOut());
+  this->ui->checkGap->setValue(item.getCheckGapTimeInSec());
+  this->ui->methodCombo->setCurrentText(item.getMethod());
+}
+
 AddServiceDialog::~AddServiceDialog() { delete ui; }
