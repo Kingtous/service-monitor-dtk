@@ -164,6 +164,7 @@ public:
     timeoutInSec->setSizePolicy(sizePolicy);
     timeoutInSec->setMinimum(1);
     timeoutInSec->setMaximum(60);
+    timeoutInSec->setValue(5);
 
     horizontalLayout_6->addWidget(timeoutInSec);
 
