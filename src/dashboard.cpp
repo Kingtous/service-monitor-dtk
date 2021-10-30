@@ -78,9 +78,10 @@ DashBoardPage::DashBoardPage(DWidget* parent)
   latencySeries = new QLineSeries(this);
   latencySeries->setName("延迟");
   latencySeries->setColor(QColor(240, 240, 240));
-  latencySeries->setPointLabelsVisible();
-  latencySeries->setPointLabelsFormat("@yPoint ms");
-  latencySeries->setPointLabelsVisible(true);
+  // TODO 解决字符撕裂
+  //  latencySeries->setPointLabelsVisible();
+  //  latencySeries->setPointLabelsFormat("@yPoint ms");
+  //  latencySeries->setPointLabelsVisible(true);
   //  latencySeries->setUseOpenGL();
   //    timeoutSeries = new QScatterSeries(this);
   //    timeoutSeries->setName("超时");
