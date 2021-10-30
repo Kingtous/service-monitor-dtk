@@ -126,11 +126,13 @@ ServiceGroupRepo::readServiceGroupsFromJson(const QJsonDocument& doc)
       return;
     } else {
       auto arr = v.toArray();
-      foreach (const QJsonValue& group, arr) {
-        auto newGroup = ServiceGroup::fromJsonValue(group);
-        serviceGroups.append(newGroup);
+      if (!arr.isEmpty()) {
+        foreach (const QJsonValue& group, arr) {
+          auto newGroup = ServiceGroup::fromJsonValue(group);
+          serviceGroups.append(newGroup);
+        }
+        emit serviceChanged();
       }
-      emit serviceChanged();
     }
   }
 }
@@ -141,8 +143,9 @@ ServiceGroupRepo::deleteGroup(const QString& gname)
   auto pointer = findGroup(gname);
   if (pointer != -1) {
     serviceGroups.removeAt(pointer);
-    emit serviceChanged();
+    // 判断是否为空了，为空先sync Disk
     syncWithDisk();
+    emit serviceChanged();
     return true;
   }
   return false;
