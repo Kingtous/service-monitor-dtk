@@ -37,8 +37,16 @@ DashBoardPage::DashBoardPage(DWidget* parent)
   groupDetailBtn->setText(tr("详情"));
   connect(groupDetailBtn, &DPushButton::clicked, this, [=]() {
     // TODO 增加越界检查
-    auto group =
-      ServiceGroupRepo::instance()->getServiceGroups()[this->currentGroupIndex];
+    auto groups = ServiceGroupRepo::instance()->getServiceGroups();
+    if (groups.empty()) {
+      DDialog dialog;
+      dialog.setTitle("提示");
+      dialog.setMessage("还未添加任何组哦～请到右上角先添加组");
+      dialog.addButton("确定", true, DDialog::ButtonType::ButtonRecommend);
+      dialog.exec();
+      return;
+    }
+    auto group = groups[this->currentGroupIndex];
     DDialog dialog;
     dialog.setTitle("组监控面板");
     auto widget = new ServicesDetailPage(group, &dialog);

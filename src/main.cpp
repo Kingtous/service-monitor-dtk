@@ -16,6 +16,7 @@
 
 #include <QDate>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QLayout>
 #include <QMetaProperty>
 #include <QPropertyAnimation>
@@ -132,6 +133,13 @@ initMenuTriggers()
   auto mOpenLog = window->titlebar()->menu()->addAction("打开日志文件夹");
   QObject::connect(mOpenLog, &QAction::triggered, window, [=]() {
     DDesktopServices::showFolder(DLogManager::getlogFilePath());
+  });
+
+  // 打开日志
+  auto mHelper = window->titlebar()->menu()->addAction("使用帮助");
+  QObject::connect(mHelper, &QAction::triggered, window, [=]() {
+    QDesktopServices::openUrl(
+      QUrl(QLatin1String("http://service-monitor-wiki.kingtous.cn/")));
   });
 
   // 注册ServiceItem
