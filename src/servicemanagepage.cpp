@@ -93,11 +93,11 @@ ServiceManagePage::onServiceGroupsChanged()
       auto method = new Dtk::Widget::DStandardItem();
       method->setText(item.getMethod());
       method->setEditable(false);
-      method->setData(item.getMethod(), Qt::EditRole);
+      method->setData(item.getServiceName(), Qt::EditRole);
       auto url = new Dtk::Widget::DStandardItem();
       url->setText(item.getUrl());
       url->setEditable(false);
-      url->setData(item.getUrl(), Qt::EditRole);
+      url->setData(item.getServiceName(), Qt::EditRole);
       serviceGroupNode->appendRow({ serviceNode, method, url });
     }
     serviceViewRoot->appendRow(serviceGroupNode);
