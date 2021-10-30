@@ -149,13 +149,20 @@ ServiceManagePage::handleEditService(const QModelIndex& index)
   dialog->addButton("取消", false, Dtk::Widget::DDialog::ButtonNormal);
   dialog->addButton(
     "确定", true, Dtk::Widget::DDialog::ButtonType::ButtonRecommend);
-  connect(dialog,
-          &AddServiceDialog::onServiceConfirm,
-          this,
-          [&, serviceName, gname](const ServiceItem& item) {
-            // item
-            ServiceGroupRepo::instance()->updateItem(gname, serviceName, item);
-          });
+  connect(
+    dialog,
+    &AddServiceDialog::onServiceConfirm,
+    this,
+    [&, serviceName, gname, dialog](const ServiceItem& item) {
+      // item
+      if (ServiceGroupRepo::instance()->updateItem(gname, serviceName, item)) {
+        dialog->close();
+      } else {
+        DDialog dialog{ "提示", "更新失败，未找到记录" };
+        dialog.addButton("确定", true);
+        dialog.exec();
+      }
+    });
   dialog->exec();
 }
 

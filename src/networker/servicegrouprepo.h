@@ -28,7 +28,7 @@ public:
   int findItem(const QString& gname, const QString& itemName);
   bool deleteItem(const QString& gname, const QString& itemName);
   bool registerItem(const QString& gname, const ServiceItem& item);
-  void updateItem(const QString& gname,
+  bool updateItem(const QString& gname,
                   const QString& itemName,
                   const ServiceItem& item);
 

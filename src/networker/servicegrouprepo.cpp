@@ -210,7 +210,7 @@ ServiceGroupRepo::registerItem(const QString& gname, const ServiceItem& item)
   }
 }
 
-void
+bool
 ServiceGroupRepo::updateItem(const QString& gname,
                              const QString& itemName,
                              const ServiceItem& item)
@@ -228,8 +228,12 @@ ServiceGroupRepo::updateItem(const QString& gname,
     if (i != sz) {
       services->removeAt(i);
       services->insert(i, item);
+    } else {
+      return false;
     }
     emit serviceChanged();
     syncWithDisk();
+    return true;
   }
+  return false;
 }
