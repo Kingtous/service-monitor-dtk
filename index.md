@@ -33,7 +33,7 @@
 
 > 暂时没有龙芯虚拟机，故现只提供amd64下载地址
 
-[码云下载](https://file.kingtous.cn/index.php?user/publicLink&fid=0cdeAHSiA18fM848ijecJEYkN3oQ83dVhcDG-MgDbmhal8L2t8YM27pEKJ6WifkfFFgE-TKNbOiUdWk8r9Th24ErNeef59tw5SjtZcKL1pcnmfMhjrYcb3pcqZOO3RngXI0hVdghGX96OKE&file_name=/recording.gif)
+[码云下载](https://gitee.com/kingtous/service-monitor-dtk/releases)
 
 ### 使用截图与帮助
 
