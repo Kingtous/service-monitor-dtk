@@ -38,6 +38,9 @@ ServiceManagePage::ServiceManagePage(DWidget* parent)
     [=](const QPoint& p) {
       auto index = ui->treeView->indexAt(p);
       auto data = index.data();
+      if (!data.isValid()) {
+        return;
+      }
       if (index.parent() == QModelIndex()) {
         auto menu = new Dtk::Widget::DMenu();
         menu
