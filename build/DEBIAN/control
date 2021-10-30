@@ -1,6 +1,6 @@
 Package: cn.kingtous.service-monitor
 Version: 1.0.0
-Architecture: Kingtous
+Architecture: amd64 
 Section: Network
 Maintainer: Kingtous
 Depends: libdtkcore5,libdtkgui5,libdtkwidget5,libqt5charts5,libqt5network5
