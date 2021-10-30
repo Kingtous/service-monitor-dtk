@@ -47,6 +47,15 @@ DashBoardPage::DashBoardPage(DWidget* parent)
       return;
     }
     auto group = groups[this->currentGroupIndex];
+    if (group.getServices()->isEmpty()) {
+      DDialog dialog;
+      dialog.setTitle("提示");
+      dialog.setMessage(
+        "还在组中添加任何监控记录哦，请先在设置页面右击组添加要添加的记录。");
+      dialog.addButton("确定", true, DDialog::ButtonType::ButtonRecommend);
+      dialog.exec();
+      return;
+    }
     DDialog dialog;
     dialog.setTitle("组监控面板");
     auto widget = new ServicesDetailPage(group, &dialog);
