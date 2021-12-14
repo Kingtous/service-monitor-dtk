@@ -36,7 +36,7 @@ struct NetworkRequestTaskStat;
 struct NetworkStat
 {
   // <name,NetworkRequestTaskStat>
-  QMap<QString, NetworkRequestTaskStat> stats;
+    QMap<QString, NetworkRequestTaskStat>* stats;
 };
 
 //

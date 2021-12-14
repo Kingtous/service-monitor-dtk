@@ -38,11 +38,14 @@ HttpServiceMonitorTask::run()
   //    req->setSslConfiguration(config);
   //  }
   //  auto schemelist = manager->supportedSchemes();
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
   req.setTransferTimeout(int(getTimeOutMs()));
+#endif
   // req->setPriority(QNetworkRequest::Priority::HighPriority);
   auto m = getMethod();
   t.start();
   if (m == "GET") {
+    dDebug() <<"开始GET请求：" << serviceItem.getUrl();
     auto r = manager->get(req);
     QObject::connect(r, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     //            connect(r, &QNetworkReply::errorOccurred, &loop,
@@ -50,6 +53,12 @@ HttpServiceMonitorTask::run()
     //            this, [](QNetworkReply::NetworkError e) {
     //                dDebug() << "error" << e;
     //            });
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    QTimer timer;
+    timer.setSingleShot(true);
+    connect(&timer,&QTimer::timeout,r,&QNetworkReply::abort);
+    timer.start(int(getTimeOutMs()));
+#endif
     loop.exec();
     if (r->error() == QNetworkReply::NetworkError::NoError) {
       auto elapsed = this->t.elapsed();
@@ -63,6 +72,7 @@ HttpServiceMonitorTask::run()
     }
     r->deleteLater();
   } else if (m == "POST") {
+      dDebug() <<"开始POST请求：" << serviceItem.getUrl();
     QByteArray bytes;
     bytes.append(getBody().toUtf8());
     //    req.setHeader(req.ContentTypeHeader, "text/plain");
@@ -83,7 +93,7 @@ HttpServiceMonitorTask::run()
   }
   manager->deleteLater();
   this->deleteLater();
-  // dDebug() << "request " << getUrl() << "ended.";
+  dDebug() << "request " << getUrl() << "ended.";
 }
 
 const QString&

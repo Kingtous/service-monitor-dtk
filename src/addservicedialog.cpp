@@ -29,14 +29,14 @@ AddServiceDialog::AddServiceDialog(QWidget* parent)
     this->item.setUrl(text);
   });
   connect(ui->timeoutInSec,
-          &QSpinBox::textChanged,
+          QOverload<const QString&>::of(&QSpinBox::valueChanged),
           this,
           [&](const QString& text) { item.setTimeOut(text.toInt()); });
-  connect(ui->checkGap, &QSpinBox::textChanged, this, [&](const QString& text) {
+  connect(ui->checkGap, QOverload<const QString&>::of(&QSpinBox::valueChanged), this, [&](const QString& text) {
     item.setCheckGapTimeInSec(text.toInt());
   });
   connect(ui->methodCombo,
-          &QComboBox::textActivated,
+          &QComboBox::currentTextChanged,
           this,
           [&](const QString& text) { item.setMethod(text); });
 }

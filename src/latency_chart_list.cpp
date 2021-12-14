@@ -63,12 +63,12 @@ LatencyChartList::LatencyChartList(ServiceGroup& group, QWidget* parent)
   connect(refreshTimer, &QTimer::timeout, this, [=]() {
     auto it = this->ss.keyValueBegin();
     while (it != this->ss.keyValueEnd()) {
-      auto latency = it->second->y;
+      auto latency = (*it).second->y;
       if (latency == INT_MAX) {
-        dWarning() << it->first << "访问出现错误！";
-        it->second->series->append(this->index, 2000);
+        dWarning() << (*it).first << "访问出现错误！";
+        (*it).second->series->append(this->index, 2000);
       } else {
-        it->second->series->append(this->index, latency);
+        (*it).second->series->append(this->index, latency);
       }
       //      dDebug() << "append (" << this->index << "," << latency << ")";
       it++;

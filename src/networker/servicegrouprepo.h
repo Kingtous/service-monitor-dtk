@@ -48,7 +48,7 @@ private:
 private:
   // items
   QList<ServiceGroup> serviceGroups;
-  std::unique_ptr<QDir> configDir;
+ QDir* configDir;
 };
 
 #endif // SERVICEGROUPREPO_H

@@ -8,7 +8,9 @@
 
 using namespace networker::http;
 
-ServiceMonitor::ServiceMonitor() {}
+ServiceMonitor::ServiceMonitor() {
+    pool.setExpiryTimeout(0);
+}
 
 ServiceMonitor::~ServiceMonitor() {}
 
@@ -76,6 +78,8 @@ ServiceMonitor::addServiceItemToPool(const ServiceGroup& group,
               auto timer = new QTimer(this);
               timer->setInterval(taskServieItem.getCheckGapTimeInSec() * 1000);
               connect(timer, &QTimer::timeout, this, [=]() {
+                dDebug() << "触发请求："<< item.getMethod() << ":" << taskServieItem.getUrl()
+                         ;
                 this->addServiceItemToPool(group, taskServieItem);
               });
               timer->setSingleShot(true);
@@ -116,5 +120,6 @@ ServiceMonitor::addServiceItemToPool(const ServiceGroup& group,
               timer->start();
             });
     pool.start(task);
+    dDebug() << "count:" << pool.activeThreadCount() << "/" << pool.maxThreadCount();
   }
 }

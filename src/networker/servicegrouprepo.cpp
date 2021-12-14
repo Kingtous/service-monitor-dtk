@@ -42,7 +42,7 @@ ServiceGroupRepo::getServiceGroups()
         window->sendMessage(message);
 #endif
       }
-      configDir = std::make_unique<QDir>(path);
+      configDir = new QDir(path);
     }
 
     if (!configDir->exists()) {

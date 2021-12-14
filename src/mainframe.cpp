@@ -22,7 +22,7 @@ MainFrame::MainFrame(QWidget* parent)
   this->initUi();
 
   connect(
-    btnGroup, &QButtonGroup::idClicked, this, &MainFrame::sidebarBtnClicked);
+    btnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &MainFrame::sidebarBtnClicked);
 
   connect(ServiceGroupRepo::instance(),
           &ServiceGroupRepo::serviceChanged,
@@ -54,7 +54,7 @@ MainFrame::initUi()
     index++;
   }
   btnGroup->button(0)->setChecked(true);
-  connect(btnGroup, &QButtonGroup::idClicked, this, [=](int index) {
+  connect(btnGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, [=](int index) {
     // 切换页面
     rightPanel->setCurrentIndex(index);
   });
