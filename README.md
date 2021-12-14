@@ -31,7 +31,7 @@
 
 ### 下载地址
 
-> 暂时没有龙芯虚拟机，故现只提供amd64下载地址
+> 暂时没有龙芯虚拟机，故现只提供amd64、arm64下载地址
 
 [码云下载](https://gitee.com/kingtous/service-monitor-dtk/releases)
 
