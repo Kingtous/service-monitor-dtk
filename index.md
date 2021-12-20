@@ -6,13 +6,13 @@
 >
 > 源码地址：[Gitee](https://gitee.com/kingtous/service-monitor-dtk)
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=0cdeAHSiA18fM848ijecJEYkN3oQ83dVhcDG-MgDbmhal8L2t8YM27pEKJ6WifkfFFgE-TKNbOiUdWk8r9Th24ErNeef59tw5SjtZcKL1pcnmfMhjrYcb3pcqZOO3RngXI0hVdghGX96OKE&file_name=/recording.gif)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=b6f5lIH6AsjtLB7nX7p9SFV4rintocx-6YZWbgqPyavesti9FC9Z44QUTsk0jL7N_4ayud6G_qKpL2oNtJ-8jGtvItZOv8CvMa1P6EC9l_Jsx_tZ4QRtRv8dBhyBXW8f3HUKSFEHlkSUL6QxDmAW&file_name=/recording.gif)
 
 ### 简介
 
 可用于监控各类URL，定制化监控需求（定时，定量），保障API稳定。
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=51e84KX0jOd0C5peEMgKecOMauWaGprew_xv84EszhSGPdUzhlxBovUFtmg8PQsNyRXXmjyMsEC-aX5C7BfBmksh82vvs51tblZEVA9HfdwAhKdbQj5lcVUlZMpoefxYd0YWKTUU3UItmldUWmkQiiilGJs0eUxC1ASwnymCPZz8A7S7&file_name=/%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20211030115414.png)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=1c1c_rrZnjz4FVLVvMrOnpZRnhzQgNCzs6XKqUl1dUDRWVDxCtDL54lHOzeW9WtYmtz9mzQbQ15p3QF9syOROdpBPrQum5RWm7a-vcySffTrw8f9zcb0HLLSufp-dH1QgiGkD6I3VVgT_9_Ig4zMqTNMCAp5OU58H6GZOr12XEuNBPGkg4T9OA&file_name=/%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20211030115414.png)
 
 ### 特性
 
@@ -31,7 +31,7 @@
 
 ### 下载地址
 
-> 暂时没有龙芯虚拟机，故现只提供amd64下载地址
+> 暂时没有龙芯虚拟机，故现只提供amd64, arm64下载地址
 
 [码云下载](https://gitee.com/kingtous/service-monitor-dtk/releases)
 
@@ -41,7 +41,7 @@
 
 - 在右上角添加完组后，可以在设置页面右击组，可以添加服务，设置如下
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=b9a4hzALBzoVoEOAGJXHXn1NBKNuh5Ccd1thonaQTPArs28L_gt4d3D2fOEivtqpc-5hDh2lkjnnIp8Lh58s5CJGg2KeIp3qCGHB-QNj1zh5VQ4X38JzlYygUcFSUWQSxeVPJmR-Whiuj4I6HcLSnyF2a9AcJgdIfRzpqvn7pPhoL9r68R5R&file_name=/%E6%88%AA%E5%9B%BE_service_monitor_20211030115512.png)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=f7e2L8lqdCnGlI1hKAYVdXER3YfgCMLc55oqxjoC_mv7r1aqADq3GNqfqf4dL6xubfdvmzMbj-3ItVl5YFR4Cw9f4fPj1KcoRyYmq9Q76KEXvkOINDM-1-uTEXCY5c8CIv0RiaDpMeV7f2ukYdgG5sb3yPiie6SDgF1kINrYe8XAto-aggxfFm-UoQ&file_name=/%E6%88%AA%E5%9B%BE_service_monitor_20211030115512.png)
 
 ##### 组详情面板
 
@@ -49,19 +49,19 @@
 
 > 若延迟线在顶部，说明可能出现了访问错误（大多数是超时），可以在主窗口中观察具体延迟信息
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=8fc1xWRoQfxwdCCqclH57pO-4N-4R1OcwwaJXGW2I15OomWOJBbXYwWXQ1-WBAvqErezUVMRHyxFsTqnfXS5eDPji0v_iCQzcph35P5ZhiGRSrVQXlPnIcCw78_JjphDC8mKDe4E97kz5hljMZlel21FBac0d-IdrFCLYZtdfhDCI_xT&file_name=/%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20211030111446.png)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=46c4VzarQlk7QGbEoFsKD7k9Zf39zO3xLMYXG_qwnS36RMX8ygAbnOpMs8NG1EZ1XeorPIoSu1lajuM71f2xta9i8KBAFTgnA-Yy0ltVMhFSPoTV01MDmWGVbgPneNNlxHLxk_Msd3iimMxcbZiFdXdnWhqLhN4pdLjgfLB4sDY3kYfD59003A&file_name=/%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20211030111446.png)
 
 ##### 查看日志
 
 目前**暂时**可通过查看日志的方式查看所有监控信息，按钮如下：
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=dcc1dezW-l7OG5IB37yHOCiO172sTtxOtGffxxZTlOtVaiYAIVKySYtKz0U2-SQD1BT_tKhFmy8udA99FbAp_LJwKCA3X-v9B5EKqhz6uzZVNbzY7wCfSv-7VYhmY3WFzal1lB6r1U87g-LLNf7jf-OdDYgyXxKDOst-cEp6LuaEcHTS-Ycb&file_name=/%E6%88%AA%E5%9B%BE_service_monitor_20211030115545.png)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=6a18ogvcPBxl4mokiIeYWZNruJaYH86O_VkRsNuNu5EXlPnwgEQKaf7p9JL1BgczMI4yi46PhUgBOGPhDV8NPIhsQnbErN4FK0bxxB5CEe63_BVrSYlud9pMeoFrvv3VKbdxQT3sM8FJuzl_4zAQEbiakS664hnO-tu05cFcKBUhsQ-QazkrxCMSRg&file_name=/%E6%88%AA%E5%9B%BE_service_monitor_20211030115545.png)
 
 日志格式如下：
 
 格式统一，可以使用Python等数据分析软件对延迟进行可视化。
 
-![](https://file.kingtous.cn/index.php?user/publicLink&fid=d74fQKynEnrL8D0K6_NRycU0W-AFyqXLqN6RoZOmoPQQdIm-2iduVx69HRgFf9XUN2pip_A2FHJZVARHFAGnb4-I1Q3xwmkyuWLnDCBILJqRt1g-eLfXn6K6fX5p4Ofv9Ch2IeRD4w7AccthllAajp0t5fKyDxwtCFT-ToO_x59Wt7LLSsfX&file_name=/%E6%88%AA%E5%9B%BE_deepin-terminal_20211030121722.png)
+![](https://file.kingtous.cn/index.php?user/publicLink&fid=ba20zVDsWkj4-mW_2x5wwDlAxMAkVQ9h5mP1A5xzFaRSpbuA6Z1PzZyT8Gwc2hhgNBP97x7bnTk-3M49yL_IF1CRxvWMywr7BiyhmmEnAHsZhZoWEAewhpELZskKiOYIg997fI9qNm8cLrcM4lK2dmoOdK4D-abl1pGvi6M78BEaZWsCh1isG6wIeg&file_name=/%E6%88%AA%E5%9B%BE_deepin-terminal_20211030121722.png)
 
 ### TODOs
 
